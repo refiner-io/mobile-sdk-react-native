@@ -1,4 +1,3 @@
-
 {
   "name": "mobile-sdk-react-native",
   "version": "1.0.0",
@@ -11,9 +10,9 @@
     "react-native"
   ],
   "author": "Refiner",
-  "license": "",
+  "license": "MIT",
   "peerDependencies": {
-    "react-native": "^0.59.10"
+    "react-native": "^0.68.1"
   },
   "repository": {
     "type": "git",
