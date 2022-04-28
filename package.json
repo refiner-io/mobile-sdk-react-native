@@ -1,22 +1,22 @@
+
 {
   "name": "refiner-react-native",
   "version": "0.0.1",
-  "description": "Refiner SDK React Native",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "react-native"
-  ],
-  "author": "Refiner",
-  "license": "MIT",
-  "peerDependencies": {
-    "react-native": "^0.68.1"
-  },
+  "description": "Official React Native wrapper for the Refiner.io Mobile SDK",
+  "homepage": "https://refiner.io/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/refiner-io/mobile-sdk-react-native.git"
+    "url": "git://github.com/refiner-io/mobile-sdk-react-native.git"
   },
-  "readmeFilename": "README.md"
+  "keywords": [
+    "refiner.io",
+    "survey"
+  ],
+  "bugs": "https://github.com/refiner-io/mobile-sdk-react-native/issues",
+  "author": "Refiner <contact@refiner.io> (https://refiner.io)",
+  "license": "MIT",
+  "private": false,
+  "peerDependencies": {
+    "react-native": "^0.68.1"
+  }
 }
