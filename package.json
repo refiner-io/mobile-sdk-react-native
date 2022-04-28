@@ -1,0 +1,18 @@
+{
+  "name": "refiner-react-native",
+  "version": "0.0.1",
+  "description": "Official React Native wrapper for the Refiner.io Mobile SDK",
+  "homepage": "https://refiner.io/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/refiner-io/mobile-sdk-react-native.git"
+  },
+  "keywords": [
+    "refiner.io",
+    "survey"
+  ],
+  "bugs": "https://github.com/refiner-io/mobile-sdk-react-native/issues",
+  "author": "Refiner <contact@refiner.io> (https://refiner.io)",
+  "license": "MIT",
+  "private": false
+}
