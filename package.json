@@ -1,6 +1,6 @@
 {
-  "name": "mobile-sdk-react-native",
-  "version": "1.0.0",
+  "name": "refiner-react-native",
+  "version": "0.0.1",
   "description": "Refiner SDK React Native",
   "main": "index.js",
   "scripts": {
