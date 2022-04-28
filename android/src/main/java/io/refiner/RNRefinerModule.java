@@ -4,11 +4,12 @@ package io.refiner;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import javax.annotation.Nullable;
+import io.refiner.utils.MapUtil;
 
 public class RNRefinerModule extends ReactContextBaseJavaModule {
 
@@ -25,13 +26,21 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void initialize(RefinerConfigs refinerConfigs) {
-        Refiner.INSTANCE.initialize(reactContext, refinerConfigs);
+    public void initialize(String projectId) {
+        if (projectId != null) {
+            Refiner.INSTANCE.initialize(reactContext, new RefinerConfigs(projectId));
+        }
     }
 
     @ReactMethod
-    public void identifyUser(String userId, @Nullable LinkedHashMap<String, Object> userTraits, @Nullable String locale) {
-        Refiner.INSTANCE.identifyUser(userId, userTraits, locale);
+    public void identifyUser(String userId, ReadableMap userTraits, String locale) {
+        LinkedHashMap<String, Object> userTraitsMap = null;
+        if (userTraits != null) {
+            userTraitsMap = new LinkedHashMap<>(MapUtil.toMap(userTraits));
+        }
+        if (userId != null) {
+            Refiner.INSTANCE.identifyUser(userId, userTraitsMap, locale);
+        }
     }
 
     @ReactMethod
@@ -41,21 +50,31 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void trackEvent(String eventName) {
-        Refiner.INSTANCE.trackEvent(eventName);
+        if (eventName != null) {
+            Refiner.INSTANCE.trackEvent(eventName);
+        }
     }
 
     @ReactMethod
     public void trackScreen(String screenName) {
-        Refiner.INSTANCE.trackScreen(screenName);
+        if (screenName != null) {
+            Refiner.INSTANCE.trackScreen(screenName);
+        }
     }
 
     @ReactMethod
-    public void showForm(String formUuid, Boolean force) {
-        Refiner.INSTANCE.showForm(formUuid, force);
+    public void showForm(String formUuid, boolean force) {
+        if (formUuid != null) {
+            Refiner.INSTANCE.showForm(formUuid, force);
+        }
     }
 
     @ReactMethod
-    public void attachToResponse(@Nullable HashMap<String, Object> contextualData) {
-        Refiner.INSTANCE.attachToResponse(contextualData);
+    public void attachToResponse(ReadableMap contextualData) {
+        HashMap<String, Object> contextualDataMap = null;
+        if (contextualData != null) {
+            contextualDataMap = new HashMap<>(MapUtil.toMap(contextualData));
+        }
+        Refiner.INSTANCE.attachToResponse(contextualDataMap);
     }
 }
