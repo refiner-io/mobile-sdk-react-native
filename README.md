@@ -1,13 +1,13 @@
 
-# react-native-refiner
+# refiner-react-native
 
 ## Getting started
 
-`$ npm install react-native-refiner --save`
+`$ npm install refiner-react-native --save`
 
 ## Usage
 ```javascript
-import RNRefiner from 'react-native-refiner';
+import RNRefiner from 'refiner-react-native';
 
 RNRefiner.initialize("PROJECT_ID");
 
