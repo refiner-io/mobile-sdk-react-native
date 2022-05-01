@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.dependency "React"
-  s.dependency "Refiner", "1.0.2"
+  s.dependency "RefinerSDK", "1.0.2"
   # ...
   # s.dependency "..."
 end

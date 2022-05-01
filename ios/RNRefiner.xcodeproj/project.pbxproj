@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		90C0251B2818918E0090C143 /* RefinerSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 90C0251A2818918E0090C143 /* RefinerSDK */; };
 		B3E7B58A1CC2AC0600A0062D /* RNRefiner.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNRefiner.m */; };
 /* End PBXBuildFile section */
 
@@ -34,7 +33,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90C0251B2818918E0090C143 /* RefinerSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,7 +73,6 @@
 			);
 			name = RNRefiner;
 			packageProductDependencies = (
-				90C0251A2818918E0090C143 /* RefinerSDK */,
 			);
 			productName = RCTDataManager;
 			productReference = 134814201AA4EA6300B7C361 /* libRNRefiner.a */;
@@ -105,7 +102,6 @@
 			);
 			mainGroup = 58B511D21A9E6C8500147676;
 			packageReferences = (
-				90C025192818918D0090C143 /* XCRemoteSwiftPackageReference "mobile-sdk-ios" */,
 			);
 			productRefGroup = 58B511D21A9E6C8500147676;
 			projectDirPath = "";
@@ -263,25 +259,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		90C025192818918D0090C143 /* XCRemoteSwiftPackageReference "mobile-sdk-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/refiner-io/mobile-sdk-ios.git";
-			requirement = {
-				kind = exactVersion;
-				version = 1.0.2;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		90C0251A2818918E0090C143 /* RefinerSDK */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 90C025192818918D0090C143 /* XCRemoteSwiftPackageReference "mobile-sdk-ios" */;
-			productName = RefinerSDK;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 58B511D31A9E6C8500147676 /* Project object */;
 }
