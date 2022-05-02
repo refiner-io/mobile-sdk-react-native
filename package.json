@@ -1,6 +1,6 @@
 {
   "name": "refiner-react-native",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Official React Native wrapper for the Refiner.io Mobile SDK",
   "homepage": "https://github.com/refiner-io/mobile-sdk-react-native",
   "repository": {
@@ -17,5 +17,8 @@
   "private": false,
   "peerDependencies": {
     "react-native": "^0.68.1"
+  },
+  "dependencies": {
+    "refiner-react-native": "^0.0.2"
   }
 }

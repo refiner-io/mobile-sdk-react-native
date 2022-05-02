@@ -1,6 +1,6 @@
 
 #import "RNRefiner.h"
-@import RefinerSDK;
+#import <RefinerSDK/RefinerSDK-Swift.h>
 
 @implementation RNRefiner
 
@@ -13,37 +13,37 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(initialize:(NSString *)projectId)
 {
-    [[Refiner shared] initialize:RefinerConfigs(projectId)];
+  [[Refiner instance] initializeWithProjectId: projectId];
 }
 
-RCT_EXPORT_METHOD(identifyUser:(NSString *)userId (NSDictionary *) userTraits (NSString *)locale)
+RCT_EXPORT_METHOD(identifyUser:(NSString *)userId withUserTraits:(NSDictionary *)userTraits withLocale:(NSString *)locale error:(NSError * __autoreleasing *)error)
 {
-    [[Refiner shared] identifyUser:userId userTraits:userTraits locale:locale];
+  [[Refiner instance] identifyUserWithUserId: userId userTraits: userTraits locale: locale error: error];
 }
 
 RCT_EXPORT_METHOD(resetUser)
 {
-    [[Refiner shared] resetUser];
+  [[Refiner instance] resetUser];
 }
 
 RCT_EXPORT_METHOD(trackEvent:(NSString *)eventName)
 {
-    [[Refiner shared] trackEvent:eventName];
+    [[Refiner instance] trackEventWithName: eventName];
 }
 
 RCT_EXPORT_METHOD(trackScreen:(NSString *)screenName)
 {
-    [[Refiner shared] trackScreen:screenName];
+    [[Refiner instance] trackScreenWithName: screenName];
 }
 
-RCT_EXPORT_METHOD(showForm:(NSString *)formUuid (BOOL *)force)
+RCT_EXPORT_METHOD(showForm:(NSString *)formUuid withForce:(BOOL *)force)
 {
-    [[Refiner shared] showForm:formUuid force];
+  [[Refiner instance] showFormWithUuid: formUuid force: force];
 }
 
 RCT_EXPORT_METHOD(attachToResponse:(NSDictionary *)contextualData)
 {
-    [[Refiner shared] attachToResponse:contextualData];
+  [[Refiner instance] attachToResponseWithData: contextualData];
 }
 
 @end
