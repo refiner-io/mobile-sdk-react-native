@@ -16,9 +16,9 @@ RCT_EXPORT_METHOD(initialize:(NSString *)projectId)
   [[Refiner instance] initializeWithProjectId: projectId];
 }
 
-RCT_EXPORT_METHOD(identifyUser:(NSString *)userId withUserTraits:(NSDictionary *)userTraits withLocale:(NSString *)locale error:(NSError * __autoreleasing *)error)
+RCT_EXPORT_METHOD(identifyUser:(NSString *)userId withUserTraits:(NSDictionary *)userTraits withLocale:(NSString *)locale)
 {
-  [[Refiner instance] identifyUserWithUserId: userId userTraits: userTraits locale: locale error: error];
+  [[Refiner instance] identifyUserWithUserId: userId userTraits: userTraits locale: locale error: nil];
 }
 
 RCT_EXPORT_METHOD(resetUser)
