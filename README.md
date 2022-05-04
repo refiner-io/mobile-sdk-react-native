@@ -1,11 +1,21 @@
+# Refiner Mobile SDK integration
 
-# refiner-react-native
+## React Native
 
-## Getting started
+![npm](https://img.shields.io/npm/v/refiner-react-native)
+
+
+### 1) Installation
 
 `$ npm install refiner-react-native --save`
 
-## Usage
+
+#### iOS
+
+- Run command `pod install` in your ios directory
+
+
+### 2) Usage
 ```javascript
 import RNRefiner from 'refiner-react-native';
 

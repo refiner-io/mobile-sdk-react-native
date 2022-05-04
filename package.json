@@ -17,8 +17,5 @@
   "private": false,
   "peerDependencies": {
     "react-native": "^0.68.1"
-  },
-  "dependencies": {
-    "refiner-react-native": "^0.0.2"
   }
 }
