@@ -27,7 +27,7 @@ RNRefiner.identifyUser("USER_ID", userTraits, "LOCALE");
 RNRefiner.resetUser();
 RNRefiner.trackEvent("EVENT_NAME");
 RNRefiner.trackScreen("SCREEN_NAME");
-RNRefiner.showForm("FORM_UUID", true);
+RNRefiner.showForm("FORM_UUID");
 
 var contextualData = { some_data: "hello", some_more_data: "hello again" };
 RNRefiner.attachToResponse(contextualData);
