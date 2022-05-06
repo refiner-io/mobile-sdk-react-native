@@ -60,7 +60,7 @@ If you use the Manual Trigger Event for your survey, you need to call `Show Form
 RNRefiner.showForm("FORM_UUID", false);
 ```
 
-The second parameter is a boolean value to `force` the display of the survey. For testing purposes, you can set it to `true`, which will then bypass all targeting rules set in the Refiner dashboard and always display the survey.
+The second parameter is a boolean value to `force` the display of the survey and bypass all targeting rules which were set in the Refiner dashboard. Setting the parameter to `true` can be helpful when testing the SDK. In production, the parameter should be set to `false`.
 
 ```javascript
 RNRefiner.showForm("FORM_UUID", true);
