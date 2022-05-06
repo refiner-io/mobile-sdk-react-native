@@ -57,10 +57,10 @@ RNRefiner.trackScreen("SCREEN_NAME");
 If you use the Manual Trigger Event for your survey, you need to call `Show Form` whenever you want to launch the survey.
 
 ```javascript
-RNRefiner.showForm("FORM_UUID");
+RNRefiner.showForm("FORM_UUID", false);
 ```
 
-For testing purposes, you can also provide an additional `force` parameter which will bypass all targeting rules and always display the survey.
+The second parameter is a boolean value to `force` the display of the survey. For testing purposes, you can set it to `true`, which will then bypass all targeting rules set in the Refiner dashboard and always display the survey.
 
 ```javascript
 RNRefiner.showForm("FORM_UUID", true);
