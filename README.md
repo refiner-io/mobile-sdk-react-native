@@ -38,7 +38,7 @@ RNRefiner.identifyUser("USER_ID", userTraits, "LOCALE");
 
 #### Track Event
 
-`Track Event` lets you track user events. These events can be used to create user segments in Refiner.
+`Track Event` lets you track user events. Events can be used to create user segments and target audiences in Refiner.
 
 ```javascript
 RNRefiner.trackEvent("EVENT_NAME");
