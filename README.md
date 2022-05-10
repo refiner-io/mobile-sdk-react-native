@@ -17,6 +17,8 @@
 
 ### 2) Usage
 
+Visit our [documentation](https://refiner.io/docs/kb/mobile-sdk/mobile-sdk-reference/) for more information about how to use the SDK methods.
+
 #### Initialization & Configuration
 
 Initialize the SDK in your application with the needed configuration parameters.
