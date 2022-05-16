@@ -65,6 +65,8 @@ const App: () => Node = () => {
 
   RNRefiner.initialize("56421950-5d32-11ea-9bb4-9f1f1a987a49");
   RNRefiner.identifyUser("my-user-id", null, null);
+
+
   RNRefiner.showForm("616fc500-5d32-11ea-8fd5-f140dbcb9780", true);
 
   return (
