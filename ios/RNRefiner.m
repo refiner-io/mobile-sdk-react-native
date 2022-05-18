@@ -14,44 +14,7 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(initialize:(NSString *)projectId)
 {
     [[Refiner instance] initializeWithProjectId: projectId];
-    
-    [[Refiner instance] setOnBeforeShow:^(NSString * formId, id formConfig) {
-        if (self.onBeforeShow) {
-            self.onBeforeShow(formId, formConfig);
-        }
-    }];
-    
-    [[Refiner instance] setOnNavigation:^(NSString * formId, id formConfig, id next) {
-        if (self.onBeforeShow) {
-            self.onBeforeShow(formId, formConfig, next);
-        }
-    }];
-    
-    [[Refiner instance] setOnShow:^(NSString * formId) {
-        if (self.onShow) {
-            self.onShow(formId);
-        }
-    }];
-    
-    
-    [[Refiner instance] setOnClose:^(NSString * formId) {
-        if (self.onClose) {
-            self.onClose(formId);
-        }
-    }];
-    
-    [[Refiner instance] setOnDismiss:^(NSString * formId) {
-        if (self.onDismiss) {
-            self.onDismiss(formId);
-        }
-    }];
-    
-    [[Refiner instance] setOnComplete:^(NSString * formId, id formData) {
-        if (self.onComplete) {
-            self.onComplete(formId, formData);
-        }
-    }];
-    
+    // [[RNRefinerEventEmitter sharedInstance] registerEvents];
 }
 
 RCT_EXPORT_METHOD(identifyUser:(NSString *)userId withUserTraits:(NSDictionary *)userTraits withLocale:(NSString *)locale)
@@ -82,6 +45,74 @@ RCT_EXPORT_METHOD(showForm:(NSString *)formUuid withForce:(BOOL *)force)
 RCT_EXPORT_METHOD(attachToResponse:(NSDictionary *)contextualData)
 {
     [[Refiner instance] attachToResponseWithData: contextualData];
+}
+
+@end
+
+
+@implementation RNRefinerEventEmitter
+
+RCT_EXPORT_MODULE();
+
+- (NSArray<NSString *> *)supportedEvents {
+    return @[
+        kRefinerOnBeforeShow,
+        kRefinerOnNavigation,
+        kRefinerOnShow,
+        kRefinerOnClose,
+        kRefinerOnDismiss,
+        kRefinerOnComplete
+    ];
+}
+
++ (instancetype)sharedInstance {
+    static RNRefinerEventEmitter *sharedInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[self alloc] init];
+    });
+    return sharedInstance;
+}
+
+- (instancetype)init {
+    self = [super init];
+    return self;
+}
+
+- (void) registerEvents {
+    [[Refiner instance] setOnBeforeShow:^(NSString * formId, id formConfig) {
+        [self emitEventInternal:kRefinerOnBeforeShow andBody: @{kRefinerFormId: formId,
+                                                                kRefinerFormConfig: formConfig}];
+    }];
+    
+    [[Refiner instance] setOnNavigation:^(NSString * formId, id formConfig, id progress) {
+        [self emitEventInternal:kRefinerOnNavigation andBody: @{kRefinerFormId: formId,
+                                                                kRefinerFormConfig: formConfig,
+                                                                kRefinerProgress: progress}];
+    }];
+    
+    [[Refiner instance] setOnShow:^(NSString * formId) {
+        [self emitEventInternal:kRefinerOnShow andBody: @{kRefinerFormId: formId}];
+    }];
+    
+    [[Refiner instance] setOnClose:^(NSString * formId) {
+        [self emitEventInternal:kRefinerOnClose andBody: @{kRefinerFormId: formId}];
+    }];
+    
+    [[Refiner instance] setOnDismiss:^(NSString * formId) {
+        [self emitEventInternal:kRefinerOnDismiss andBody: @{kRefinerFormId: formId}];
+    }];
+    
+    [[Refiner instance] setOnComplete:^(NSString * formId, id formData) {
+        [self emitEventInternal:kRefinerOnComplete andBody:  @{kRefinerFormId: formId,
+                                                               kRefinerFormData: formData}];
+    }];
+}
+
+#pragma mark - Private
+- (void)emitEventInternal:(NSString *)eventName andBody:(NSDictionary *)body {
+    // [self sendEventWithName: eventName body: body];
+          [self sendEventWithName:@"deneme" body:@"scrollToTopHomeFeed"];
 }
 
 @end

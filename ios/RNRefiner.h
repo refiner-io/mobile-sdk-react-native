@@ -3,12 +3,29 @@
 #else
 #import <React/RCTBridgeModule.h>
 #endif
+#import <React/RCTEventEmitter.h>
+
+#pragma mark - EVENT NAMES
+static NSString *const kRefinerOnBeforeShow     = @"RefinerOnBeforeShow";
+static NSString *const kRefinerOnNavigation     = @"RefinerOnNavigation";
+static NSString *const kRefinerOnShow           = @"RefinerOnShow";
+static NSString *const kRefinerOnClose          = @"RefinerOnClose";
+static NSString *const kRefinerOnDismiss        = @"RefinerOnDismiss";
+static NSString *const kRefinerOnComplete       = @"RefinerOnComplete";
+
+#pragma mark - Constant Name
+static NSString *const kRefinerFormId           = @"RefinerFormId";
+static NSString *const kRefinerFormConfig       = @"RefinerFormConfig";
+static NSString *const kRefinerProgress         = @"RefinerProgress";
+static NSString *const kRefinerFormData         = @"RefinerFormData";
 
 @interface RNRefiner : NSObject <RCTBridgeModule>
-@property (nonatomic, copy, nullable) void (^onBeforeShow)(NSString *, id);
-@property (nonatomic, copy, nullable) void (^onNavigation)(NSString *, id, id);
-@property (nonatomic, copy, nullable) void (^onShow)(NSString *);
-@property (nonatomic, copy, nullable) void (^onClose)(NSString *);
-@property (nonatomic, copy, nullable) void (^onDismiss)(NSString *);
-@property (nonatomic, copy, nullable) void (^onComplete)(NSString *, id);
+
+@end
+
+@interface RNRefinerEventEmitter : RCTEventEmitter
+
++ (instancetype)sharedInstance;
+- (void) registerEvents;
+
 @end

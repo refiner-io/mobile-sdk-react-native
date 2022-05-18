@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import { NativeEventEmitter } from 'react-native';
 import type {Node} from 'react';
 import {
   SafeAreaView,
@@ -27,6 +28,8 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import RNRefiner from 'refiner-react-native';
+import RNRefinerEventEmitter from 'refiner-react-native';
+import {  Alert } from "react-native";
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -66,9 +69,27 @@ const App: () => Node = () => {
   RNRefiner.initialize("56421950-5d32-11ea-9bb4-9f1f1a987a49");
   RNRefiner.identifyUser("my-user-id", null, null);
 
+  RNRefinerEventEmitter.addListener(RNRefinerEventEmitter.RefinerOnBeforeShow, (event) => {
+      
+  });
 
   RNRefiner.showForm("616fc500-5d32-11ea-8fd5-f140dbcb9780", true);
 
+  const createTwoButtonAlert = () =>
+  Alert.alert(
+    "Alert Title",
+    "My Alert Msg",
+    [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel"
+      },
+      { text: "OK", onPress: () => console.log("OK Pressed") }
+    ]
+  );
+  
+  createTwoButtonAlert();
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
