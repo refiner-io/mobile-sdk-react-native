@@ -28,10 +28,13 @@ android {
         minSdkVersion 21
         targetSdkVersion 31
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0.5"
     }
     lintOptions {
         abortOnError false
+    }
+    buildFeatures {
+        dataBinding = true
     }
 }
 
@@ -51,5 +54,5 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'io.refiner:refiner:1.0.4'
+    implementation 'io.refiner:refiner:1.0.5'
 }

@@ -1,4 +1,4 @@
-package io.refiner.utils;
+package io.refiner.rn.utils;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReadableMap;
