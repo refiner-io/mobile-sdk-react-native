@@ -64,44 +64,51 @@ const App: () => Node = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  var userTraits = { email: "hello@hello.com", a_number: 123, a_date: "2022-16-04 12:00:00" };
+  var userTraits = { email: 'hello@hello.com', a_number: 123, a_date: '2022-16-04 12:00:00' };
 
-  RNRefiner.initialize("56421950-5d32-11ea-9bb4-9f1f1a987a49");
-  RNRefiner.identifyUser("my-user-id", null, null);
+  RNRefiner.initialize('56421950-5d32-11ea-9bb4-9f1f1a987a49');
+  RNRefiner.identifyUser('my-user-id', null, null);
+
+  RNRefiner.showForm('616fc500-5d32-11ea-8fd5-f140dbcb9780', true);
 
 
-  RNRefiner.showForm("616fc500-5d32-11ea-8fd5-f140dbcb9780", true);
 
-  RNRefiner.onBeforeShow((formId, formConfig) => {
-    console.log('Survey ' + formId + ' is supposed to be shown');
-    console.log(formConfig);
-    if (formId === 'ABC') {
-      console.log('Abort mission');
-      return false;
-    }
-    console.log('Continue and show survey');
+  eventEmitter.addListener('onBeforeShow', (event) => {
+    console.log('onBeforeShow');
+    console.log(event.formId);
+    console.log(event.formConfig);
+  });
+
+  eventEmitter.addListener('onNavigation', (event) => {
+    console.log('onNavigation');
+    console.log(event.formId);
+    console.log(event.formElement);
+    console.log(event.progress);
+  });
+
+  eventEmitter.addListener('onShow', (event) => {
+    console.log('onShow');
+    console.log(event.formId);
+  });
+
+  eventEmitter.addListener('onDismiss', (event) => {
+    console.log('onDismiss');
+    console.log(event.formId);
+  });
+
+  eventEmitter.addListener('onClose', (event) => {
+    console.log('onClose');
+    console.log(event.formId);
+  });
+
+  eventEmitter.addListener('onComplete', (event) => {
+    console.log('onComplete');
+    console.log(event.formId);
+    console.log(event.formData);
   });
 
 
-  eventEmitter.addListener('onNavigation', e => alert(JSON.stringify(e)));
 
-
-  RNRefiner.onShow((formId) => {
-    console.log('Survey ' + formId + ' was shown');
-  });
-
-  RNRefiner.onDismiss((formId) => {
-   console.log('Survey ' + formId + ' was dismissed');
-  });
-
-  RNRefiner.onClose((formId) => {
-   console.log('Survey ' + formId + ' was closed');
-  });
-
-  RNRefiner.onComplete((formId, formData) => {
-    console.log('Survey ' + formId + ' was submitted');
-    console.log(formData);
-  });
 
   return (
     <SafeAreaView style={backgroundStyle}>

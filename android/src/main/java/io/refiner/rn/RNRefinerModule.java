@@ -1,11 +1,14 @@
 
 package io.refiner.rn;
 
-import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -35,6 +38,13 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
         if (projectId != null) {
             Refiner.INSTANCE.initialize(reactContext, new RefinerConfigs(projectId));
         }
+
+        onBeforeShow();
+        onShow();
+        onClose();
+        onComplete();
+        onDismiss();
+        onNavigation();
     }
 
     @ReactMethod
@@ -83,70 +93,76 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
         Refiner.INSTANCE.attachToResponse(contextualDataMap);
     }
 
-    @ReactMethod
-    public void onBeforeShow(Callback callback) {
+    private void onBeforeShow() {
         Refiner.INSTANCE.onBeforeShow((formId, formConfig) -> {
             String config = Json.Default.encodeToString(JsonObject.Companion.serializer(), (JsonObject) formConfig);
-            callback.invoke(formId, config);
+            WritableMap params = Arguments.createMap();
+            params.putString("formId", formId);
+            params.putString("formConfig", config);
+            sendEvent("onBeforeShow", params, reactContext);
             return null;
         });
     }
 
-//    @ReactMethod
-//    public void onNavigation() {
-//        Refiner.INSTANCE.onNavigation((formId, formElement, progress) -> {
-////            JsonElement element = Json.Default.encodeToJsonElement(JsonObject.Companion.serializer(), (JsonObject) formElement);
-////            JsonElement pro = Json.Default.encodeToJsonElement(JsonObject.Companion.serializer(), (JsonObject) progress);
-//
-//            WritableMap params = Arguments.createMap();
-//            params.putString("formId", formId);
-////            params.putMap("formElement", (WritableMap) element);
-////            params.putMap("progress", (WritableMap) pro);
-//            sendEvent("onNavigation", params, reactContext);
-//            return null;
-//        });
-//    }
-
-    @ReactMethod
-    public void onShow(Callback callback) {
+    private void onShow() {
         Refiner.INSTANCE.onShow((formId) -> {
-            callback.invoke(formId);
+            WritableMap params = Arguments.createMap();
+            params.putString("formId", formId.toString());
+            sendEvent("onShow", params, reactContext);
             return null;
         });
     }
 
-    @ReactMethod
-    public void onClose(Callback callback) {
+    private void onClose() {
         Refiner.INSTANCE.onClose((formId) -> {
-            callback.invoke(formId);
+            WritableMap params = Arguments.createMap();
+            params.putString("formId", formId.toString());
+            sendEvent("onClose", params, reactContext);
             return null;
         });
     }
 
-    @ReactMethod
-    public void onDismiss(Callback callback) {
+    private void onDismiss() {
         Refiner.INSTANCE.onDismiss((formId) -> {
-            callback.invoke(formId);
+            WritableMap params = Arguments.createMap();
+            params.putString("formId", formId.toString());
+            sendEvent("onDismiss", params, reactContext);
             return null;
         });
     }
 
-    @ReactMethod
-    public void onComplete(Callback callback) {
+    private void onComplete() {
         Refiner.INSTANCE.onComplete((formId, formData) -> {
             String data = Json.Default.encodeToString(JsonObject.Companion.serializer(), (JsonObject) formData);
-            callback.invoke(formId, data);
+            WritableMap params = Arguments.createMap();
+            params.putString("formId", formId.toString());
+            params.putString("formData", data);
+            sendEvent("onComplete", params, reactContext);
             return null;
         });
     }
 
-//    private void sendEvent(String eventName, Object params, ReactContext context) {
-//        try {
-//            context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-//                    .emit(eventName, params);
-//            Log.e(TAG, "Sending event " + eventName);
-//        } catch (Throwable t) {
+    private void onNavigation() {
+        Refiner.INSTANCE.onNavigation((formId, formElement, progress) -> {
+            String element = Json.Default.encodeToString(JsonObject.Companion.serializer(), (JsonObject) formElement);
+            String pro = Json.Default.encodeToString(JsonObject.Companion.serializer(), (JsonObject) progress);
+
+            WritableMap params = Arguments.createMap();
+            params.putString("formId", formId);
+            params.putString("formElement", element);
+            params.putString("progress", pro);
+            sendEvent("onNavigation", params, reactContext);
+            return null;
+        });
+    }
+
+    private void sendEvent(String eventName, Object params, ReactContext context) {
+        try {
+            context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit(eventName, params);
+//            Log.d(TAG, "Sending event " + eventName);
+        } catch (Throwable t) {
 //            Log.e(TAG, t.getLocalizedMessage());
-//        }
-//    }
+        }
+    }
 }
