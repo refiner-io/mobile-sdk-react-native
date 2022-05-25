@@ -27,6 +27,9 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import RNRefiner from 'refiner-react-native';
+import { DeviceEventEmitter, NativeEventEmitter, NativeModules} from 'react-native';
+
+const eventEmitter = new NativeEventEmitter();
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -68,6 +71,37 @@ const App: () => Node = () => {
 
 
   RNRefiner.showForm("616fc500-5d32-11ea-8fd5-f140dbcb9780", true);
+
+  RNRefiner.onBeforeShow((formId, formConfig) => {
+    console.log('Survey ' + formId + ' is supposed to be shown');
+    console.log(formConfig);
+    if (formId === 'ABC') {
+      console.log('Abort mission');
+      return false;
+    }
+    console.log('Continue and show survey');
+  });
+
+
+  eventEmitter.addListener('onNavigation', e => alert(JSON.stringify(e)));
+
+
+  RNRefiner.onShow((formId) => {
+    console.log('Survey ' + formId + ' was shown');
+  });
+
+  RNRefiner.onDismiss((formId) => {
+   console.log('Survey ' + formId + ' was dismissed');
+  });
+
+  RNRefiner.onClose((formId) => {
+   console.log('Survey ' + formId + ' was closed');
+  });
+
+  RNRefiner.onComplete((formId, formData) => {
+    console.log('Survey ' + formId + ' was submitted');
+    console.log(formData);
+  });
 
   return (
     <SafeAreaView style={backgroundStyle}>
