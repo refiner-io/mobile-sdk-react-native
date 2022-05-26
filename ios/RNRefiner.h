@@ -6,18 +6,18 @@
 #import <React/RCTEventEmitter.h>
 
 #pragma mark - EVENT NAMES
-static NSString *const kRefinerOnBeforeShow     = @"RefinerOnBeforeShow";
-static NSString *const kRefinerOnNavigation     = @"RefinerOnNavigation";
-static NSString *const kRefinerOnShow           = @"RefinerOnShow";
-static NSString *const kRefinerOnClose          = @"RefinerOnClose";
-static NSString *const kRefinerOnDismiss        = @"RefinerOnDismiss";
-static NSString *const kRefinerOnComplete       = @"RefinerOnComplete";
+static NSString *const kRefinerOnBeforeShow     = @"onBeforeShow";
+static NSString *const kRefinerOnNavigation     = @"onNavigation";
+static NSString *const kRefinerOnShow           = @"onShow";
+static NSString *const kRefinerOnClose          = @"onClose";
+static NSString *const kRefinerOnDismiss        = @"onDismiss";
+static NSString *const kRefinerOnComplete       = @"onComplete";
 
 #pragma mark - Constant Name
-static NSString *const kRefinerFormId           = @"RefinerFormId";
-static NSString *const kRefinerFormConfig       = @"RefinerFormConfig";
-static NSString *const kRefinerProgress         = @"RefinerProgress";
-static NSString *const kRefinerFormData         = @"RefinerFormData";
+static NSString *const kRefinerFormId           = @"formId";
+static NSString *const kRefinerFormConfig       = @"formConfig";
+static NSString *const kRefinerProgress         = @"progress";
+static NSString *const kRefinerFormData         = @"formData";
 
 @interface RNRefiner : NSObject <RCTBridgeModule>
 
