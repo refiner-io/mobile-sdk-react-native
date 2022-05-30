@@ -27,10 +27,9 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import RNRefiner from 'refiner-react-native';
-import { DeviceEventEmitter, NativeEventEmitter, NativeModules} from 'react-native';
-const { RNRefinerEventEmitter } = NativeModules;
+import { DeviceEventEmitter, NativeEventEmitter, NativeModules } from 'react-native';
 
-const eventEmitter = new NativeEventEmitter(RNRefinerEventEmitter);
+const eventEmitter = NativeModules.RNRefinerEventEmitter ? new NativeEventEmitter(NativeModules.RNRefinerEventEmitter) : DeviceEventEmitter;
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -71,7 +70,6 @@ const App: () => Node = () => {
   RNRefiner.identifyUser('my-user-id', null, null);
 
   RNRefiner.showForm('616fc500-5d32-11ea-8fd5-f140dbcb9780', true);
-
 
 
   eventEmitter.addListener('onBeforeShow', (event) => {
