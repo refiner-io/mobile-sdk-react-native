@@ -86,6 +86,16 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
         Refiner.INSTANCE.attachToResponse(contextualDataMap);
     }
 
+    @ReactMethod
+    public void addListener(String eventName) {
+        // Keep: Required for RN built in Event Emitter Calls.
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+        // Keep: Required for RN built in Event Emitter Calls.
+    }
+
     private void registerCallbacks() {
         Refiner.INSTANCE.onBeforeShow((formId, formConfig) -> {
             String config = Json.Default.encodeToString(JsonObject.Companion.serializer(), (JsonObject) formConfig);

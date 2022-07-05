@@ -1,6 +1,6 @@
 
-import { NativeModules } from 'react-native';
+import { NativeModules,NativeEventEmitter } from 'react-native';
 
-const { RNRefiner } = NativeModules;
+export const RNRefiner = NativeModules.RNRefiner;
 
-export default RNRefiner;
+export const RNRefinerEventEmitter = new NativeEventEmitter(RNRefiner);

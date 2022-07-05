@@ -26,10 +26,13 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import RNRefiner from 'refiner-react-native';
-import { DeviceEventEmitter, NativeEventEmitter, NativeModules } from 'react-native';
 
-const eventEmitter = NativeModules.RNRefinerEventEmitter ? new NativeEventEmitter(NativeModules.RNRefinerEventEmitter) : DeviceEventEmitter;
+import { NativeModules,NativeEventEmitter } from 'react-native';
+
+export const RNRefiner = NativeModules.RNRefiner;
+
+export const RNRefinerEventEmitter = new NativeEventEmitter(RNRefiner);
+
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -72,35 +75,35 @@ const App: () => Node = () => {
   RNRefiner.showForm('616fc500-5d32-11ea-8fd5-f140dbcb9780', true);
 
 
-  eventEmitter.addListener('onBeforeShow', (event) => {
+  RNRefinerEventEmitter.addListener('onBeforeShow', (event) => {
     console.log('onBeforeShow');
     console.log(event.formId);
     console.log(event.formConfig);
   });
 
-  eventEmitter.addListener('onNavigation', (event) => {
+  RNRefinerEventEmitter.addListener('onNavigation', (event) => {
     console.log('onNavigation');
     console.log(event.formId);
     console.log(event.formElement);
     console.log(event.progress);
   });
 
-  eventEmitter.addListener('onShow', (event) => {
+  RNRefinerEventEmitter.addListener('onShow', (event) => {
     console.log('onShow');
     console.log(event.formId);
   });
 
-  eventEmitter.addListener('onDismiss', (event) => {
+  RNRefinerEventEmitter.addListener('onDismiss', (event) => {
     console.log('onDismiss');
     console.log(event.formId);
   });
 
-  eventEmitter.addListener('onClose', (event) => {
+  RNRefinerEventEmitter.addListener('onClose', (event) => {
     console.log('onClose');
     console.log(event.formId);
   });
 
-  eventEmitter.addListener('onComplete', (event) => {
+  RNRefinerEventEmitter.addListener('onComplete', (event) => {
     console.log('onComplete');
     console.log(event.formId);
     console.log(event.formData);

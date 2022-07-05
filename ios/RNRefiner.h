@@ -3,6 +3,7 @@
 #else
 #import <React/RCTBridgeModule.h>
 #endif
+#import "React/RCTEventEmitter.h"
 
-@interface RNRefiner : NSObject <RCTBridgeModule>
+@interface RNRefiner : RCTEventEmitter <RCTBridgeModule>
 @end
