@@ -27,9 +27,9 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import RNRefiner from 'refiner-react-native';
-import { DeviceEventEmitter, NativeEventEmitter, NativeModules} from 'react-native';
+import { DeviceEventEmitter, NativeEventEmitter, NativeModules } from 'react-native';
 
-const eventEmitter = new NativeEventEmitter();
+const eventEmitter = NativeModules.RNRefinerEventEmitter ? new NativeEventEmitter(NativeModules.RNRefinerEventEmitter) : DeviceEventEmitter;
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -72,7 +72,6 @@ const App: () => Node = () => {
   RNRefiner.showForm('616fc500-5d32-11ea-8fd5-f140dbcb9780', true);
 
 
-
   eventEmitter.addListener('onBeforeShow', (event) => {
     console.log('onBeforeShow');
     console.log(event.formId);
@@ -106,10 +105,7 @@ const App: () => Node = () => {
     console.log(event.formId);
     console.log(event.formData);
   });
-
-
-
-
+  
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />

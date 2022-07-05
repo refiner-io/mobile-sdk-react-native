@@ -1,5 +1,6 @@
 
 #import "RNRefiner.h"
+#import <RNRefinerEventEmitter.h>
 #import <RefinerSDK/RefinerSDK-Swift.h>
 
 @implementation RNRefiner
@@ -14,6 +15,7 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(initialize:(NSString *)projectId)
 {
     [[Refiner instance] initializeWithProjectId: projectId];
+    [[RNRefinerEventEmitter sharedInstance] registerEvents];
 }
 
 RCT_EXPORT_METHOD(identifyUser:(NSString *)userId withUserTraits:(NSDictionary *)userTraits withLocale:(NSString *)locale)
