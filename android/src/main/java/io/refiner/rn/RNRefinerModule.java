@@ -3,12 +3,11 @@ package io.refiner.rn;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -37,14 +36,8 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
     public void initialize(String projectId) {
         if (projectId != null) {
             Refiner.INSTANCE.initialize(reactContext, new RefinerConfigs(projectId));
+            registerCallbacks();
         }
-
-        onBeforeShow();
-        onShow();
-        onClose();
-        onComplete();
-        onDismiss();
-        onNavigation();
     }
 
     @ReactMethod
@@ -93,56 +86,46 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
         Refiner.INSTANCE.attachToResponse(contextualDataMap);
     }
 
-    private void onBeforeShow() {
+    private void registerCallbacks() {
         Refiner.INSTANCE.onBeforeShow((formId, formConfig) -> {
             String config = Json.Default.encodeToString(JsonObject.Companion.serializer(), (JsonObject) formConfig);
             WritableMap params = Arguments.createMap();
             params.putString("formId", formId);
             params.putString("formConfig", config);
-            sendEvent("onBeforeShow", params, reactContext);
+            sendEvent("onBeforeShow", params);
             return null;
         });
-    }
 
-    private void onShow() {
         Refiner.INSTANCE.onShow((formId) -> {
             WritableMap params = Arguments.createMap();
             params.putString("formId", formId.toString());
-            sendEvent("onShow", params, reactContext);
+            sendEvent("onShow", params);
             return null;
         });
-    }
 
-    private void onClose() {
         Refiner.INSTANCE.onClose((formId) -> {
             WritableMap params = Arguments.createMap();
             params.putString("formId", formId.toString());
-            sendEvent("onClose", params, reactContext);
+            sendEvent("onClose", params);
             return null;
         });
-    }
 
-    private void onDismiss() {
         Refiner.INSTANCE.onDismiss((formId) -> {
             WritableMap params = Arguments.createMap();
             params.putString("formId", formId.toString());
-            sendEvent("onDismiss", params, reactContext);
+            sendEvent("onDismiss", params);
             return null;
         });
-    }
 
-    private void onComplete() {
         Refiner.INSTANCE.onComplete((formId, formData) -> {
             String data = Json.Default.encodeToString(JsonObject.Companion.serializer(), (JsonObject) formData);
             WritableMap params = Arguments.createMap();
             params.putString("formId", formId.toString());
             params.putString("formData", data);
-            sendEvent("onComplete", params, reactContext);
+            sendEvent("onComplete", params);
             return null;
         });
-    }
 
-    private void onNavigation() {
         Refiner.INSTANCE.onNavigation((formId, formElement, progress) -> {
             String element = Json.Default.encodeToString(JsonObject.Companion.serializer(), (JsonObject) formElement);
             String pro = Json.Default.encodeToString(JsonObject.Companion.serializer(), (JsonObject) progress);
@@ -151,15 +134,14 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
             params.putString("formId", formId);
             params.putString("formElement", element);
             params.putString("progress", pro);
-            sendEvent("onNavigation", params, reactContext);
+            sendEvent("onNavigation", params);
             return null;
         });
     }
 
-    private void sendEvent(String eventName, Object params, ReactContext context) {
+    private void sendEvent(String eventName, Object params) {
         try {
-            context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit(eventName, params);
+            getReactApplicationContext().getJSModule(RCTNativeAppEventEmitter.class).emit(eventName, params);
 //            Log.d(TAG, "Sending event " + eventName);
         } catch (Throwable t) {
 //            Log.e(TAG, t.getLocalizedMessage());
