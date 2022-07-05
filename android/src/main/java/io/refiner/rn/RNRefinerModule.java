@@ -1,10 +1,13 @@
 
 package io.refiner.rn;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -12,6 +15,8 @@ import java.util.LinkedHashMap;
 import io.refiner.Refiner;
 import io.refiner.RefinerConfigs;
 import io.refiner.rn.utils.MapUtil;
+import kotlinx.serialization.json.Json;
+import kotlinx.serialization.json.JsonObject;
 
 public class RNRefinerModule extends ReactContextBaseJavaModule {
 
@@ -31,6 +36,7 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
     public void initialize(String projectId) {
         if (projectId != null) {
             Refiner.INSTANCE.initialize(reactContext, new RefinerConfigs(projectId));
+            registerCallbacks();
         }
     }
 
@@ -78,5 +84,67 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
             contextualDataMap = new HashMap<>(MapUtil.toMap(contextualData));
         }
         Refiner.INSTANCE.attachToResponse(contextualDataMap);
+    }
+
+    private void registerCallbacks() {
+        Refiner.INSTANCE.onBeforeShow((formId, formConfig) -> {
+            String config = Json.Default.encodeToString(JsonObject.Companion.serializer(), (JsonObject) formConfig);
+            WritableMap params = Arguments.createMap();
+            params.putString("formId", formId);
+            params.putString("formConfig", config);
+            sendEvent("onBeforeShow", params);
+            return null;
+        });
+
+        Refiner.INSTANCE.onShow((formId) -> {
+            WritableMap params = Arguments.createMap();
+            params.putString("formId", formId.toString());
+            sendEvent("onShow", params);
+            return null;
+        });
+
+        Refiner.INSTANCE.onClose((formId) -> {
+            WritableMap params = Arguments.createMap();
+            params.putString("formId", formId.toString());
+            sendEvent("onClose", params);
+            return null;
+        });
+
+        Refiner.INSTANCE.onDismiss((formId) -> {
+            WritableMap params = Arguments.createMap();
+            params.putString("formId", formId.toString());
+            sendEvent("onDismiss", params);
+            return null;
+        });
+
+        Refiner.INSTANCE.onComplete((formId, formData) -> {
+            String data = Json.Default.encodeToString(JsonObject.Companion.serializer(), (JsonObject) formData);
+            WritableMap params = Arguments.createMap();
+            params.putString("formId", formId.toString());
+            params.putString("formData", data);
+            sendEvent("onComplete", params);
+            return null;
+        });
+
+        Refiner.INSTANCE.onNavigation((formId, formElement, progress) -> {
+            String element = Json.Default.encodeToString(JsonObject.Companion.serializer(), (JsonObject) formElement);
+            String pro = Json.Default.encodeToString(JsonObject.Companion.serializer(), (JsonObject) progress);
+
+            WritableMap params = Arguments.createMap();
+            params.putString("formId", formId);
+            params.putString("formElement", element);
+            params.putString("progress", pro);
+            sendEvent("onNavigation", params);
+            return null;
+        });
+    }
+
+    private void sendEvent(String eventName, Object params) {
+        try {
+            getReactApplicationContext().getJSModule(RCTNativeAppEventEmitter.class).emit(eventName, params);
+//            Log.d(TAG, "Sending event " + eventName);
+        } catch (Throwable t) {
+//            Log.e(TAG, t.getLocalizedMessage());
+        }
     }
 }

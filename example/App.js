@@ -27,6 +27,9 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import RNRefiner from 'refiner-react-native';
+import { DeviceEventEmitter, NativeEventEmitter, NativeModules} from 'react-native';
+
+const eventEmitter = new NativeEventEmitter();
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -61,13 +64,51 @@ const App: () => Node = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  var userTraits = { email: "hello@hello.com", a_number: 123, a_date: "2022-16-04 12:00:00" };
+  var userTraits = { email: 'hello@hello.com', a_number: 123, a_date: '2022-16-04 12:00:00' };
 
-  RNRefiner.initialize("56421950-5d32-11ea-9bb4-9f1f1a987a49");
-  RNRefiner.identifyUser("my-user-id", null, null);
+  RNRefiner.initialize('56421950-5d32-11ea-9bb4-9f1f1a987a49');
+  RNRefiner.identifyUser('my-user-id', null, null);
+
+  RNRefiner.showForm('616fc500-5d32-11ea-8fd5-f140dbcb9780', true);
 
 
-  RNRefiner.showForm("616fc500-5d32-11ea-8fd5-f140dbcb9780", true);
+
+  eventEmitter.addListener('onBeforeShow', (event) => {
+    console.log('onBeforeShow');
+    console.log(event.formId);
+    console.log(event.formConfig);
+  });
+
+  eventEmitter.addListener('onNavigation', (event) => {
+    console.log('onNavigation');
+    console.log(event.formId);
+    console.log(event.formElement);
+    console.log(event.progress);
+  });
+
+  eventEmitter.addListener('onShow', (event) => {
+    console.log('onShow');
+    console.log(event.formId);
+  });
+
+  eventEmitter.addListener('onDismiss', (event) => {
+    console.log('onDismiss');
+    console.log(event.formId);
+  });
+
+  eventEmitter.addListener('onClose', (event) => {
+    console.log('onClose');
+    console.log(event.formId);
+  });
+
+  eventEmitter.addListener('onComplete', (event) => {
+    console.log('onComplete');
+    console.log(event.formId);
+    console.log(event.formData);
+  });
+
+
+
 
   return (
     <SafeAreaView style={backgroundStyle}>

@@ -1,6 +1,6 @@
 apply plugin: "com.android.application"
 
-import com.android.build.OutputFile
+import com.android.build.*
 import org.apache.tools.ant.taskdefs.condition.Os
 
 /**
@@ -258,6 +258,10 @@ android {
             }
 
         }
+    }
+
+    buildFeatures {
+        dataBinding = true
     }
 }
 
