@@ -95,3 +95,66 @@ Call `Reset User` to reset the user identifier previously set through `Identify 
 ```javascript
 RNRefiner.resetUser();
 ```
+
+#### Register callback functions
+
+Registering callback functions allows you to execute any code at specific moments in the lifecycle of a survey.
+A popular use-case for callback functions is to redirect a user to a new screen once they completed a survey.
+
+`onBeforeShow` gets called right before a survey is supposed to be shown.
+
+```javascript
+  RNRefinerEventEmitter.addListener('onBeforeShow', (event) => {
+    console.log('onBeforeShow');
+    console.log(event.formId);
+    console.log(event.formConfig);
+  });     
+```
+
+`onNavigation` gets called when the user moves through the survey
+
+```javascript
+  RNRefinerEventEmitter.addListener('onNavigation', (event) => {
+    console.log('onNavigation');
+    console.log(event.formId);
+    console.log(event.formElement);
+    console.log(event.progress);
+  });    
+```
+
+`onShow` gets called when a survey widget becomes visible to your user.
+
+```javascript
+  RNRefinerEventEmitter.addListener('onShow', (event) => {
+    console.log('onShow');
+    console.log(event.formId);
+  });   
+```
+
+`onClose` gets called when the survey widgets disappears from the screen.
+
+```javascript
+  RNRefinerEventEmitter.addListener('onClose', (event) => {
+    console.log('onClose');
+    console.log(event.formId);
+  });    
+```
+
+`onDismiss` gets called when the user dismissed a survey by clicking on the “x” in the top right corner.
+
+```javascript
+  RNRefinerEventEmitter.addListener('onDismiss', (event) => {
+    console.log('onDismiss');
+    console.log(event.formId);
+  });    
+```
+
+`onComplete` gets called when the user completed (submitted) a survey.
+
+```javascript
+  RNRefinerEventEmitter.addListener('onComplete', (event) => {
+    console.log('onComplete');
+    console.log(event.formId);
+    console.log(event.formData);
+  });   
+```     
