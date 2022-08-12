@@ -35,7 +35,10 @@ Visit our [documentation](https://refiner.io/docs/kb/mobile-sdk/mobile-sdk-refer
 Initialize the SDK in your application with the needed configuration parameters.
 
 ```javascript
-import RNRefiner from 'refiner-react-native';
+import { NativeModules, NativeEventEmitter } from 'react-native';
+
+export const RNRefiner = NativeModules.RNRefiner;
+export const RNRefinerEventEmitter = new NativeEventEmitter(RNRefiner);
 
 RNRefiner.initialize("PROJECT_ID");
 ```
