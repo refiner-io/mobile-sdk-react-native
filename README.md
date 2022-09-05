@@ -36,8 +36,8 @@ Initialize the SDK in your application with the needed configuration parameters.
 
 ```javascript
 import { NativeModules, NativeEventEmitter } from 'react-native';
+import { RNRefiner } from 'refiner-react-native';
 
-export const RNRefiner = NativeModules.RNRefiner;
 export const RNRefinerEventEmitter = new NativeEventEmitter(RNRefiner);
 
 RNRefiner.initialize("PROJECT_ID");
