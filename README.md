@@ -32,7 +32,7 @@ Visit our [documentation](https://refiner.io/docs/kb/mobile-sdk/mobile-sdk-refer
 
 #### Initialization & Configuration
 
-Initialize the SDK in your application with the needed configuration parameters.
+Initialize the SDK in your application with the needed configuration parameters. You can also enable debug mode during your development.
 
 ```javascript
 import { NativeModules, NativeEventEmitter } from 'react-native';
@@ -40,16 +40,16 @@ import { RNRefiner } from 'refiner-react-native';
 
 export const RNRefinerEventEmitter = new NativeEventEmitter(RNRefiner);
 
-RNRefiner.initialize("PROJECT_ID");
+RNRefiner.initialize("PROJECT_ID", false);
 ```
 
 #### Identify User
 
-Call `Identify User` to create or update user traits in Refiner.
+Call `Identify User` to create or update user traits in Refiner. Except userId, other parameters are optional.
 
 ```javascript
 var userTraits = { email: "hello@hello.com", a_number: 123, a_date: "2022-16-04 12:00:00" };
-RNRefiner.identifyUser("USER_ID", userTraits, "LOCALE");
+RNRefiner.identifyUser("USER_ID", userTraits, "LOCALE", "SIGNATURE");
 ```
 
 #### Track Event
