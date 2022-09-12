@@ -37,15 +37,15 @@ RCT_EXPORT_MODULE()
     ];
 }
 
-RCT_EXPORT_METHOD(initialize:(NSString *)projectId)
+RCT_EXPORT_METHOD(initialize:(NSString *)projectId withEnableDebugMode:(BOOL *)enableDebugMode)
 {
-    [[Refiner instance] initializeWithProjectId: projectId];
+    [[Refiner instance] initializeWithProjectId: projectId enableDebugMode: enableDebugMode];
     [self registerCallbacks];
 }
 
-RCT_EXPORT_METHOD(identifyUser:(NSString *)userId withUserTraits:(NSDictionary *)userTraits withLocale:(NSString *)locale)
+RCT_EXPORT_METHOD(identifyUser:(NSString *)userId withUserTraits:(NSDictionary *)userTraits withLocale:(NSString *)locale withSignature:(NSString *)signature)
 {
-    [[Refiner instance] identifyUserWithUserId: userId userTraits: userTraits locale: locale error: nil];
+    [[Refiner instance] identifyUserWithUserId: userId userTraits: userTraits locale: locale signature: signature error: nil];
 }
 
 RCT_EXPORT_METHOD(resetUser)

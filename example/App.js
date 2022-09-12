@@ -27,8 +27,9 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 
-import { NativeModules, NativeEventEmitter } from 'react-native';
-import { RNRefiner } from 'refiner-react-native';
+import { NativeModules,NativeEventEmitter } from 'react-native';
+
+export const RNRefiner = NativeModules.RNRefiner;
 
 export const RNRefinerEventEmitter = new NativeEventEmitter(RNRefiner);
 
