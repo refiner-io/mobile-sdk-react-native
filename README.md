@@ -32,7 +32,9 @@ Visit our [documentation](https://refiner.io/docs/kb/mobile-sdk/mobile-sdk-refer
 
 #### Initialization & Configuration
 
-Initialize the SDK in your application with the needed configuration parameters. You can also enable debug mode during your development.
+Initialize the SDK in your application with the needed configuration parameters. 
+
+The second parameter is for activating a debug mode during development. If activated, the SDK will log all interactions with the Refiner backend servers. 
 
 ```javascript
 import { NativeModules,NativeEventEmitter } from 'react-native';
@@ -46,7 +48,20 @@ RNRefiner.initialize("PROJECT_ID", false);
 
 #### Identify User
 
-Call `Identify User` to create or update user traits in Refiner. Except userId, other parameters are optional.
+Call `Identify User` to create or update user traits in Refiner. 
+
+The first parameter is the userId of your logged-in user and is the only mandatory parameter. 
+
+The second parameter is an object of user traits. You can provide an empty object if you don't want to send any user traits to your Refiner account.
+
+```javascript
+var userTraits = { email: "hello@hello.com", a_number: 123, a_date: "2022-16-04 12:00:00" };
+RNRefiner.identifyUser("USER_ID", userTraits, null, null);
+```
+
+The third parameter is for setting the `locale` of a user and is optional. The expected format is a two letter ISO 639-1 language code. When provided, the locale code is used for launching surveys for specific languages, as well as launching translated sureys. You can set the value to `null` if you are not using any language specific features.
+
+The fourth parameter is an optional [Identity Verification](https://refiner.io/docs/kb/mobile-sdk/identify-verification-for-mobile-sdks/) signature. We recommend to use a Identify Verification signature for increased security in a production environment. For development purposes, you can set this value to `null`.
 
 ```javascript
 var userTraits = { email: "hello@hello.com", a_number: 123, a_date: "2022-16-04 12:00:00" };
