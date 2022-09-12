@@ -54,5 +54,5 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'io.refiner:refiner:1.0.9'
+    implementation 'io.refiner:refiner:1.1.0'
 }
