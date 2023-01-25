@@ -71,6 +71,11 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void ping() {
+        Refiner.INSTANCE.ping();
+    }
+
+    @ReactMethod
     public void showForm(String formUuid, boolean force) {
         if (formUuid != null) {
             Refiner.INSTANCE.showForm(formUuid, force);

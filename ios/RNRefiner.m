@@ -63,6 +63,11 @@ RCT_EXPORT_METHOD(trackScreen:(NSString *)screenName)
     [[Refiner instance] trackScreenWithName: screenName];
 }
 
+RCT_EXPORT_METHOD(ping)
+{
+    [[Refiner instance] ping];
+}
+
 RCT_EXPORT_METHOD(showForm:(NSString *)formUuid withForce:(BOOL *)force)
 {
     [[Refiner instance] showFormWithUuid: formUuid force: force];
