@@ -78,12 +78,22 @@ RNRefiner.trackEvent("EVENT_NAME");
 
 #### Track Screen
 
-`Track Screen` provides to track screen that user is currently on. Screen information can be used to launch surveys in specific areas of your app.
+`Track Screen` lets you to track screen that user is currently on. Screen information can be used to launch surveys in specific areas of your app.
 
 We recommend to track screens on which you might want to show a survey one day. There is no need to systematically track all screens of your app.
 
 ```javascript
 RNRefiner.trackScreen("SCREEN_NAME");
+```
+
+#### Ping
+
+Depending on your setup, you might want to initiate regular checks for surveys that are scheduled for the current user. For example when you are using time based trigger events, or when a target audience is based on user data received by our backend API. 
+
+The `Ping` method provides an easy way to perform such checks. You can call the `Ping` method at key moments in a user's journey, such as when the app is re-opened, or when the user performs a specific action.
+
+```javascript
+RNRefiner.ping();
 ```
 
 #### Show Form
