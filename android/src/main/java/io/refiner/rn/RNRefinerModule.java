@@ -83,12 +83,18 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void attachToResponse(ReadableMap contextualData) {
+    public void addToResponse(ReadableMap contextualData) {
         HashMap<String, Object> contextualDataMap = null;
         if (contextualData != null) {
             contextualDataMap = new HashMap<>(MapUtil.toMap(contextualData));
         }
-        Refiner.INSTANCE.attachToResponse(contextualDataMap);
+        Refiner.INSTANCE.addToResponse(contextualDataMap);
+    }
+
+    @Deprecated
+    @ReactMethod
+    public void attachToResponse(ReadableMap contextualData) {
+        addToResponse(contextualData);
     }
 
     @ReactMethod

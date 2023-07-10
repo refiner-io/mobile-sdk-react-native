@@ -112,11 +112,11 @@ RNRefiner.showForm("FORM_UUID", true);
 
 #### Attach Contextual Data
 
-Attach contextual data to the survey submissions with `attachToResponse`. Set `null` to remove the contextual data. 
+Attach contextual data to the survey submissions with `addToResponse`. Set `null` to remove the contextual data. 
 
 ```javascript
 var contextualData = { some_data: "hello", some_more_data: "hello again" };
-RNRefiner.attachToResponse(contextualData);
+RNRefiner.addToResponse(contextualData);
 ```
 
 #### Reset User
