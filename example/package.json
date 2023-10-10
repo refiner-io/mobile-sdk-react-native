@@ -10,8 +10,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/cli-platform-android": "^11.3.8",
     "react": "18.1.0",
-    "react-native": "0.70.0",
+    "react-native": "^0.70.13",
+    "react-native-gradle-plugin": "^0.71.19",
     "refiner-react-native": "^0.0.10"
   },
   "devDependencies": {

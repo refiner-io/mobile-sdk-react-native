@@ -130,9 +130,11 @@ def reactNativeArchitectures() {
 }
 
 android {
+    namespace 'com.example'
+
     ndkVersion rootProject.ext.ndkVersion
 
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdk rootProject.ext.compileSdkVersion
 
     defaultConfig {
         applicationId "com.example"
