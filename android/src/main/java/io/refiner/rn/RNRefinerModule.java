@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import io.refiner.Refiner;
-import io.refiner.RefinerConfigs;
 import io.refiner.rn.utils.MapUtil;
 import kotlinx.serialization.json.Json;
 import kotlinx.serialization.json.JsonObject;
@@ -33,10 +32,17 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void initialize(String projectId, Boolean enableDebugMode) {
+    public void initialize(String projectId, Boolean debugMode) {
         if (projectId != null) {
-            Refiner.INSTANCE.initialize(reactContext, new RefinerConfigs(projectId, enableDebugMode));
+            Refiner.INSTANCE.initialize(reactContext, projectId, debugMode);
             registerCallbacks();
+        }
+    }
+
+    @ReactMethod
+    public void setProject(String projectId) {
+        if (projectId != null) {
+            Refiner.INSTANCE.setProject(projectId);
         }
     }
 
@@ -79,6 +85,20 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
     public void showForm(String formUuid, boolean force) {
         if (formUuid != null) {
             Refiner.INSTANCE.showForm(formUuid, force);
+        }
+    }
+
+    @ReactMethod
+    public void dismissForm(String formUuid) {
+        if (formUuid != null) {
+            Refiner.INSTANCE.dismissForm(formUuid);
+        }
+    }
+
+    @ReactMethod
+    public void closeForm(String formUuid) {
+        if (formUuid != null) {
+            Refiner.INSTANCE.closeForm(formUuid);
         }
     }
 

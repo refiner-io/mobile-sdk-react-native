@@ -37,9 +37,9 @@ RCT_EXPORT_MODULE()
     ];
 }
 
-RCT_EXPORT_METHOD(initialize:(NSString *)projectId withEnableDebugMode:(BOOL *)enableDebugMode)
+RCT_EXPORT_METHOD(initialize:(NSString *)projectId withDebugMode:(BOOL *)debugMode)
 {
-    [[Refiner instance] initializeWithProjectId: projectId enableDebugMode: enableDebugMode];
+    [[Refiner instance] initializeWithProjectId: projectId debugMode: debugMode];
     [self registerCallbacks];
 }
 
@@ -73,9 +73,19 @@ RCT_EXPORT_METHOD(showForm:(NSString *)formUuid withForce:(BOOL *)force)
     [[Refiner instance] showFormWithUuid: formUuid force: force];
 }
 
-RCT_EXPORT_METHOD(attachToResponse:(NSDictionary *)contextualData)
+RCT_EXPORT_METHOD(dismissForm:(NSString *)formUuid)
 {
-    [[Refiner instance] attachToResponseWithData: contextualData];
+    [[Refiner instance] dismissFormWithUuid: formUuid];
+}
+
+RCT_EXPORT_METHOD(closeForm:(NSString *)formUuid)
+{
+    [[Refiner instance] closeFormWithUuid: formUuid];
+}
+
+RCT_EXPORT_METHOD(addToResponse:(NSDictionary *)contextualData)
+{
+    [[Refiner instance] addToResponseWithData: contextualData];
 }
 
 - (void) registerCallbacks {
