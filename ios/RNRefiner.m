@@ -43,6 +43,11 @@ RCT_EXPORT_METHOD(initialize:(NSString *)projectId withDebugMode:(BOOL *)debugMo
     [self registerCallbacks];
 }
 
+RCT_EXPORT_METHOD(setProject:(NSString *)projectId)
+{
+    [[Refiner instance] setProjectWithProjectId: projectId];
+}
+
 RCT_EXPORT_METHOD(identifyUser:(NSString *)userId withUserTraits:(NSDictionary *)userTraits withLocale:(NSString *)locale withSignature:(NSString *)signature)
 {
     [[Refiner instance] identifyUserWithUserId: userId userTraits: userTraits locale: locale signature: signature error: nil];
