@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "RNRefiner"
-  s.version      = "1.3.4"
+  s.version      = "1.3.10"
   s.summary      = "RNRefiner"
   s.description  = <<-DESC
                   RNRefiner
