@@ -6,13 +6,9 @@ Pod::Spec.new do |s|
   s.name         = "refiner-react-native"
   s.version      = package["version"]
   s.summary      = package["description"]
-  s.description  = <<-DESC
-                  Refiner SDK React Native
-                   DESC
   s.homepage     = "https://github.com/refiner-io/mobile-sdk-react-native"
   s.license      = "MIT"
-  # s.license    = { :type => "MIT", :file => "FILE_LICENSE" }
-  s.authors      = { "Refiner" => "" }
+  s.author       = { package["author"]["name"] => package["author"]["email"] }
   s.platforms    = { :ios => "10.0" }
   s.source       = { :git => "https://github.com/refiner-io/mobile-sdk-react-native.git", :tag => "#{s.version}" }
 
@@ -21,7 +17,5 @@ Pod::Spec.new do |s|
 
   s.dependency "React"
   s.dependency "RefinerSDK"
-  # ...
-  # s.dependency "..."
 end
 
