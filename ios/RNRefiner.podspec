@@ -1,15 +1,11 @@
 
 Pod::Spec.new do |s|
   s.name         = "RNRefiner"
-  s.version      = "1.3.10"
-  s.summary      = "RNRefiner"
-  s.description  = <<-DESC
-                  RNRefiner
-                   DESC
-  s.homepage     = ""
+  s.version      = "1.3.11"
+  s.summary      = "Official React Native wrapper for the Refiner.io Mobile SDK"
+  s.homepage     = "https://github.com/refiner-io/mobile-sdk-react-native"
   s.license      = "MIT"
-  # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
-  s.author             = { "author" => "author@domain.cn" }
+  s.author       = { "Refiner" => "contact@refiner.io" }
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/author/RNRefiner.git", :tag => "master" }
   s.source_files  = "RNRefiner/**/*.{h,m}"
@@ -18,8 +14,6 @@ Pod::Spec.new do |s|
 
   s.dependency "React"
   s.dependency "RefinerSDK"
-  #s.dependency "others"
-
 end
 
   
