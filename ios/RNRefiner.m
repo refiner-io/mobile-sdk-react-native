@@ -93,6 +93,11 @@ RCT_EXPORT_METHOD(addToResponse:(NSDictionary *)contextualData)
     [[Refiner instance] addToResponseWithData: contextualData];
 }
 
+RCT_EXPORT_METHOD(startSession)
+{
+    [[Refiner instance] startSession];
+}
+
 - (void) registerCallbacks {
     [[Refiner instance] setOnBeforeShow:^(NSString * formId, id formConfig) {
         [self emitEventInternal:kRefinerOnBeforeShow andBody: @{kRefinerFormId: formId,

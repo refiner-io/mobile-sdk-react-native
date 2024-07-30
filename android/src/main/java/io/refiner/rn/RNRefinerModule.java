@@ -111,6 +111,11 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
         Refiner.INSTANCE.addToResponse(contextualDataMap);
     }
 
+    @ReactMethod
+    public void startSession() {
+        Refiner.INSTANCE.startSession();
+    }
+
     @Deprecated
     @ReactMethod
     public void attachToResponse(ReadableMap contextualData) {
