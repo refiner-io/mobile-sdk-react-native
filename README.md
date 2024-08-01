@@ -1,25 +1,23 @@
-# Refiner Mobile SDK integration
-
-## React Native
+# Refiner React Native SDK
 
 ![npm](https://img.shields.io/npm/v/refiner-react-native)
 
 
-### 1) Installation
+## 1) Installation
 
 `$ npm install refiner-react-native --save`
 
 
-#### iOS
+### iOS
 
 - Run command `pod install` in your ios directory
 
 
-### 2) Usage
+## 2) Usage
 
 Visit our [documentation](https://refiner.io/docs/kb/mobile-sdk/mobile-sdk-reference/) for more information about how to use the SDK methods.
 
-#### Initialization & Configuration
+### Initialization & Configuration
 
 Initialize the SDK in your application with the needed configuration parameters. 
 
@@ -35,7 +33,7 @@ export const RNRefinerEventEmitter = new NativeEventEmitter(RNRefiner);
 RNRefiner.initialize("PROJECT_ID", false);
 ```
 
-#### Identify User
+### Identify User
 
 Call `Identify User` to create or update user traits in Refiner. 
 
@@ -57,7 +55,7 @@ var userTraits = { email: "hello@hello.com", a_number: 123, a_date: "2022-16-04 
 RNRefiner.identifyUser("USER_ID", userTraits, "LOCALE", "SIGNATURE");
 ```
 
-#### Track Event
+### Track Event
 
 `Track Event` lets you track user events. Tracked events can be used to create user segments and target audiences in Refiner.
 
@@ -65,7 +63,7 @@ RNRefiner.identifyUser("USER_ID", userTraits, "LOCALE", "SIGNATURE");
 RNRefiner.trackEvent("EVENT_NAME");
 ```
 
-#### Track Screen
+### Track Screen
 
 `Track Screen` lets you to track screen that user is currently on. Screen information can be used to launch surveys in specific areas of your app.
 
@@ -75,7 +73,7 @@ We recommend to track screens on which you might want to show a survey one day. 
 RNRefiner.trackScreen("SCREEN_NAME");
 ```
 
-#### Ping
+### Ping
 
 Depending on your setup, you might want to initiate regular checks for surveys that are scheduled for the current user. For example when you are using time based trigger events, or when a target audience is based on user data received by our backend API. 
 
@@ -85,7 +83,7 @@ The `Ping` method provides an easy way to perform such checks. You can call the 
 RNRefiner.ping();
 ```
 
-#### Show Form
+### Show Form
 
 If you use the Manual Trigger Event for your survey, you need to call `Show Form` whenever you want to launch the survey.
 
@@ -99,7 +97,7 @@ The second parameter is a boolean value to `force` the display of the survey and
 RNRefiner.showForm("FORM_UUID", true);
 ```
 
-#### Attach Contextual Data
+### Attach Contextual Data
 
 Attach contextual data to the survey submissions with `addToResponse`. Set `null` to remove the contextual data. 
 
@@ -116,7 +114,7 @@ A new user session is automatically detected when a user returns to your applica
 RNRefiner.startSession();
 ```
 
-#### Reset User
+### Reset User
 
 Call `Reset User` to reset the user identifier previously set through `Identify User`. We recommend calling this method when the user logs out from your app.
 
@@ -124,7 +122,7 @@ Call `Reset User` to reset the user identifier previously set through `Identify 
 RNRefiner.resetUser();
 ```
 
-#### Set Project
+### Set Project
 
 Change the environment UUID during runtime, after the SDK has been initialised.
 
@@ -132,7 +130,7 @@ Change the environment UUID during runtime, after the SDK has been initialised.
 Refiner.setProject("PROJECT_ID");
 ```
 
-#### Close Surveys
+### Close Surveys
 
 Close a survey programmatically without sending any information to the backend API with the `closeForm` method.
 
@@ -146,7 +144,7 @@ Close a survey programmatically and send a "dismissed at" timestamp to the backe
 Refiner.dismissForm("FORM_UUID");
 ```
 
-#### Register callback functions
+### Register callback functions
 
 Registering callback functions allows you to execute any code at specific moments in the lifecycle of a survey.
 A popular use-case for callback functions is to redirect a user to a new screen once they completed a survey.
