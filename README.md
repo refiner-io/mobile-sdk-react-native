@@ -55,6 +55,19 @@ var userTraits = { email: "hello@hello.com", a_number: 123, a_date: "2022-16-04 
 RNRefiner.identifyUser("USER_ID", userTraits, "LOCALE", "SIGNATURE");
 ```
 
+### Set User
+
+The `Set User` method acts as an alternative to the `Identify User` method described above. 
+
+In contrast to the `Identify User` method, the `Set User` method does not immediately create a user object in your Refiner account. The provided user Id and traits are kept locally in your app and no data is communicated to our servers at first. Only when the user performs a meaningful action in your app (e.g. `Track Event` or `Track Screen` is executed) will a user object be created in Refiner. Provided user traits will be attached to the user object when a survey is shown.
+
+The purpose of this alternative method is provide a way to identify users locally when the SDK is initialised but keep the number of tracked users in your Refiner account to a minimum.
+
+```javascript
+var userTraits = { email: "hello@hello.com", a_number: 123, a_date: "2022-16-04 12:00:00" };
+RNRefiner.setUser("USER_ID", userTraits, "LOCALE", "SIGNATURE");
+```
+
 ### Track Event
 
 `Track Event` lets you track user events. Tracked events can be used to create user segments and target audiences in Refiner.
