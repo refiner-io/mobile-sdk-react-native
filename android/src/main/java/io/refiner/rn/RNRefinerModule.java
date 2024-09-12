@@ -58,6 +58,17 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setUser(String userId, ReadableMap userTraits, String locale, String signature) {
+        LinkedHashMap<String, Object> userTraitsMap = null;
+        if (userTraits != null) {
+            userTraitsMap = new LinkedHashMap<>(MapUtil.toMap(userTraits));
+        }
+        if (userId != null) {
+            Refiner.INSTANCE.setUser(userId, userTraitsMap, locale, signature);
+        }
+    }
+
+    @ReactMethod
     public void resetUser() {
         Refiner.INSTANCE.resetUser();
     }

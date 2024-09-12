@@ -53,6 +53,11 @@ RCT_EXPORT_METHOD(identifyUser:(NSString *)userId withUserTraits:(NSDictionary *
     [[Refiner instance] identifyUserWithUserId: userId userTraits: userTraits locale: locale signature: signature error: nil];
 }
 
+RCT_EXPORT_METHOD(setUser:(NSString *)userId withUserTraits:(NSDictionary *)userTraits withLocale:(NSString *)locale withSignature:(NSString *)signature)
+{
+    [[Refiner instance] setUserWithUserId: userId userTraits: userTraits locale: locale signature: signature error: nil];
+}
+
 RCT_EXPORT_METHOD(resetUser)
 {
     [[Refiner instance] resetUser];
