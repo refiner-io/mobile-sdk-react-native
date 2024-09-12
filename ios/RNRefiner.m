@@ -37,7 +37,7 @@ RCT_EXPORT_MODULE()
     ];
 }
 
-RCT_EXPORT_METHOD(initialize:(NSString *)projectId withDebugMode:(BOOL *)debugMode)
+RCT_EXPORT_METHOD(initialize:(NSString *)projectId withDebugMode:(BOOL)debugMode)
 {
     [[Refiner instance] initializeWithProjectId: projectId debugMode: debugMode];
     [self registerCallbacks];
@@ -73,7 +73,7 @@ RCT_EXPORT_METHOD(ping)
     [[Refiner instance] ping];
 }
 
-RCT_EXPORT_METHOD(showForm:(NSString *)formUuid withForce:(BOOL *)force)
+RCT_EXPORT_METHOD(showForm:(NSString *)formUuid withForce:(BOOL)force)
 {
     [[Refiner instance] showFormWithUuid: formUuid force: force];
 }
