@@ -22,7 +22,15 @@
   "license": "MIT",
   "private": false,
   "peerDependencies": {
-    "react-native": "^0.73.2"
+    "react-native": "^0.76.6"
   },
-  "types": "index.d.ts"
+  "types": "index.d.ts",
+  "devDependencies": {
+    "@react-native-community/cli": "^16.0.2",
+    "@react-native-community/cli-platform-android": "^16.0.2",
+    "@react-native-community/cli-platform-ios": "^16.0.2"
+  },
+  "dependencies": {
+    "@react-native-community/cli-platform-android": "^16.0.2"
+  }
 }
