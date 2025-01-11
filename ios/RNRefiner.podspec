@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "RNRefiner"
-  s.version      = "1.5.0"
+  s.version      = "1.6.0"
   s.summary      = "Official React Native wrapper for the Refiner.io Mobile SDK"
   s.homepage     = "https://github.com/refiner-io/mobile-sdk-react-native"
   s.license      = "MIT"
