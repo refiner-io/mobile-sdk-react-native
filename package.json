@@ -1,6 +1,6 @@
 {
   "name": "refiner-react-native",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Official React Native wrapper for the Refiner.io Mobile SDK",
   "homepage": "https://github.com/refiner-io/mobile-sdk-react-native",
   "repository": {
