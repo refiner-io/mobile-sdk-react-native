@@ -3,6 +3,7 @@ package com.example;
 import android.app.Application;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.facebook.react.ReactHost;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
@@ -11,6 +12,9 @@ import com.facebook.soloader.SoLoader;
 import com.facebook.react.soloader.OpenSourceMergedSoMapping;
 import java.io.IOException;
 import java.util.List;
+
+
+import static com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -50,6 +54,11 @@ public class MainApplication extends Application implements ReactApplication {
   public ReactNativeHost getReactNativeHost() {
     return mReactNativeHost;
   }
+
+    @Override
+    public ReactHost getReactHost() {
+        return getDefaultReactHost(getApplicationContext(), mReactNativeHost);
+    }
 
   @Override
   public void onCreate() {
