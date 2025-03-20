@@ -1509,10 +1509,10 @@ PODS:
     - React-logger (= 0.76.6)
     - React-perflogger (= 0.76.6)
     - React-utils (= 0.76.6)
-  - refiner-react-native (1.5.0):
+  - refiner-react-native (1.6.1):
     - React
-    - RefinerSDK
-  - RefinerSDK (1.5.4)
+    - RefinerSDK (~> 1.5.5)
+  - RefinerSDK (1.5.5)
   - SocketRocket (0.7.1)
   - Yoga (0.0.0)
 
@@ -1783,8 +1783,8 @@ SPEC CHECKSUMS:
   React-utils: e6697b03f21c7ac57b075d848cda7882662cabf7
   ReactCodegen: 484b223748d7489d7036db1cbf79896d297e33a7
   ReactCommon: 832cdd669aeecd430d9ca1975d15676b38d0b263
-  refiner-react-native: bc532493e062b6e4d07c6839283d9325a6f83e51
-  RefinerSDK: 5a490b286f9b32f64df6b05c75a7421d3b88cdc5
+  refiner-react-native: 1482be549456d5103953d249fbcda75ff115e22f
+  RefinerSDK: 16fe0f98480a926f99f3670f31b6244042724c39
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: be6f55a028e86c83ae066f018e9b5d24ffc45436
 
