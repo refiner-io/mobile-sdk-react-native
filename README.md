@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/refiner-react-native)
 
-This repository hosts the official Refiner React-Native SDK. Installing this package allows you to track user data in Refiner and launch in-app surveys within your app.
+This repository hosts the official Refiner React Native SDK. Installing this package allows you to track user data in Refiner and launch in-app surveys within your app.
 
 Refiner is a customer feedback survey platform designed specifically for web and mobile applications. Get spot-on insights from your users with perfectly timed [mobile app microsurveys](https://refiner.io/features/mobile-app-surveys/).
 
