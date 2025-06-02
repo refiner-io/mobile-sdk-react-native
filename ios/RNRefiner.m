@@ -10,12 +10,14 @@ static NSString *const kRefinerOnShow           = @"onShow";
 static NSString *const kRefinerOnClose          = @"onClose";
 static NSString *const kRefinerOnDismiss        = @"onDismiss";
 static NSString *const kRefinerOnComplete       = @"onComplete";
+static NSString *const kRefinerOnError          = @"onError";
 #pragma mark - Constant Name
 static NSString *const kRefinerFormId           = @"formId";
 static NSString *const kRefinerFormConfig       = @"formConfig";
 static NSString *const kRefinerFormElement      = @"formElement";
 static NSString *const kRefinerProgress         = @"progress";
 static NSString *const kRefinerFormData         = @"formData";
+static NSString *const kRefinerMessage          = @"message";
 
 @implementation RNRefiner
 
@@ -33,7 +35,8 @@ RCT_EXPORT_MODULE()
         kRefinerOnShow,
         kRefinerOnClose,
         kRefinerOnDismiss,
-        kRefinerOnComplete
+        kRefinerOnComplete,
+        kRefinerOnError
     ];
 }
 
@@ -130,6 +133,10 @@ RCT_EXPORT_METHOD(startSession)
     [[Refiner instance] setOnComplete:^(NSString * formId, id formData) {
         [self emitEventInternal:kRefinerOnComplete andBody:  @{kRefinerFormId: formId,
                                                                kRefinerFormData: formData}];
+    }];
+    
+    [[Refiner instance] setOnError:^(NSString * message) {
+        [self emitEventInternal:kRefinerOnError andBody: @{kRefinerMessage: message}];
     }];
 }
 

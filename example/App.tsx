@@ -111,6 +111,10 @@ function App(): JSX.Element {
     console.log(event.formData);
   });
 
+    RNRefinerEventEmitter.addListener('onError', (event) => {
+    console.log('onError');
+    console.log(event.message);
+  });
 
   const isDarkMode = useColorScheme() === 'dark';
 
