@@ -194,6 +194,13 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
             sendEvent("onNavigation", params);
             return null;
         });
+
+        Refiner.INSTANCE.onError((message) -> {
+            WritableMap params = Arguments.createMap();
+            params.putString("message", message.toString());
+            sendEvent("onError", params);
+            return null;
+        });
     }
 
     private void sendEvent(String eventName, Object params) {

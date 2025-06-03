@@ -229,3 +229,12 @@ A popular use-case for callback functions is to redirect a user to a new screen 
     console.log(event.formData);
   });   
 ```     
+
+`onError` gets called when an error occurred.
+
+```javascript
+  RNRefinerEventEmitter.addListener('onError', (event) => {
+    console.log('onError');
+    console.log(event.meesage);
+  });   
+```
