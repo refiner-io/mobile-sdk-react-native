@@ -34,7 +34,7 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void initialize(String projectId, Boolean debugMode) {
         if (projectId != null) {
-            Refiner.INSTANCE.initialize(reactContext, projectId, debugMode);
+            Refiner.INSTANCE.initialize(reactContext.getApplicationContext(), projectId, debugMode);
             registerCallbacks();
         }
     }
@@ -47,13 +47,16 @@ public class RNRefinerModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void identifyUser(String userId, ReadableMap userTraits, String locale, String signature) {
+    public void identifyUser(String userId, ReadableMap userTraits, String locale, String signature,
+                             String writeOperation) {
         LinkedHashMap<String, Object> userTraitsMap = null;
         if (userTraits != null) {
             userTraitsMap = new LinkedHashMap<>(MapUtil.toMap(userTraits));
         }
         if (userId != null) {
-            Refiner.INSTANCE.identifyUser(userId, userTraitsMap, locale, signature);
+            Refiner.INSTANCE.identifyUser(userId, userTraitsMap, locale, signature,
+                    writeOperation == null ? Refiner.WriteOperation.APPEND :
+                            Refiner.WriteOperation.valueOf(writeOperation));
         }
     }
 

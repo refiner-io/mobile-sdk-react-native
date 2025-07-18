@@ -51,9 +51,9 @@ RCT_EXPORT_METHOD(setProject:(NSString *)projectId)
     [[Refiner instance] setProjectWith: projectId];
 }
 
-RCT_EXPORT_METHOD(identifyUser:(NSString *)userId withUserTraits:(NSDictionary *)userTraits withLocale:(NSString *)locale withSignature:(NSString *)signature)
+RCT_EXPORT_METHOD(identifyUser:(NSString *)userId withUserTraits:(NSDictionary *)userTraits withLocale:(NSString *)locale withSignature:(NSString *)signature, withWriteOperation:(NSString *)writeOperation)
 {
-    [[Refiner instance] identifyUserWithUserId: userId userTraits: userTraits locale: locale signature: signature error: nil];
+    [[Refiner instance] identifyUserWithUserId: userId userTraits: userTraits locale: locale signature: signature writeOperation: writeOperation error: nil];
 }
 
 RCT_EXPORT_METHOD(setUser:(NSString *)userId withUserTraits:(NSDictionary *)userTraits withLocale:(NSString *)locale withSignature:(NSString *)signature)
