@@ -15,10 +15,12 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:8.1.4'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.10'
     }
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdk 35
@@ -34,6 +36,15 @@ android {
         abortOnError false
     }
     namespace = "io.refiner.rn"
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 repositories {
@@ -53,4 +64,6 @@ repositories {
 dependencies {
     implementation 'com.facebook.react:react-native:+'
     implementation 'io.refiner:refiner:1.5.7'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.10"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
 }
