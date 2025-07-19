@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -25,13 +25,10 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import {NativeModules, NativeEventEmitter} from 'react-native';
 
-import { NativeModules,NativeEventEmitter } from 'react-native';
-
-export const RNRefiner = NativeModules.RNRefiner;
-
-export const RNRefinerEventEmitter = new NativeEventEmitter(RNRefiner);
-
+const {RNRefiner} = NativeModules;
+const refinerEventEmitter = new NativeEventEmitter(RNRefiner);
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -64,59 +61,94 @@ function Section({children, title}: SectionProps): JSX.Element {
 }
 
 function App(): JSX.Element {
-
- var userTraits = { email: 'hello@hello.com', a_number: 123, a_date: '2022-16-04 12:00:00' };
-
-  RNRefiner.initialize('56421950-5d32-11ea-9bb4-9f1f1a987a49', false);
-
-  RNRefiner.identifyUser('my-user-id', userTraits, null, null, null);
-
-  RNRefiner.showForm('616fc500-5d32-11ea-8fd5-f140dbcb9780', true);
-
-  var contextualData = { some_data: "hello", some_more_data: "hello again" };
-  
-  RNRefiner.addToResponse(contextualData)
-
-  RNRefinerEventEmitter.addListener('onBeforeShow', (event) => {
-    console.log('onBeforeShow');
-    console.log(event.formId);
-    console.log(event.formConfig);
-  });
-
-  RNRefinerEventEmitter.addListener('onNavigation', (event) => {
-    console.log('onNavigation');
-    console.log(event.formId);
-    console.log(event.formElement);
-    console.log(event.progress);
-  });
-
-  RNRefinerEventEmitter.addListener('onShow', (event) => {
-    console.log('onShow');
-    console.log(event.formId);
-  });
-
-  RNRefinerEventEmitter.addListener('onDismiss', (event) => {
-    console.log('onDismiss');
-    console.log(event.formId);
-  });
-
-  RNRefinerEventEmitter.addListener('onClose', (event) => {
-    console.log('onClose');
-    console.log(event.formId);
-  });
-
-  RNRefinerEventEmitter.addListener('onComplete', (event) => {
-    console.log('onComplete');
-    console.log(event.formId);
-    console.log(event.formData);
-  });
-
-    RNRefinerEventEmitter.addListener('onError', (event) => {
-    console.log('onError');
-    console.log(event.message);
-  });
-
   const isDarkMode = useColorScheme() === 'dark';
+
+  useEffect(() => {
+    // User traits object
+    const userTraits = {
+      email: 'hello@hello.com',
+      a_number: 123,
+      a_date: '2022-16-04 12:00:00',
+    };
+
+    // Identify user
+    RNRefiner.identifyUser('my-user-id', userTraits, null, null);
+
+
+    // Add contextual data
+    const contextualData = {
+      some_data: 'hello',
+      some_more_data: 'hello again',
+    };
+
+    RNRefiner.addToResponse(contextualData);
+
+    // Show form
+    RNRefiner.showForm('616fc500-5d32-11ea-8fd5-f140dbcb9780', true);
+
+    // Event listeners setup
+    const beforeShowListener = refinerEventEmitter.addListener(
+      'onBeforeShow',
+      event => {
+        console.log('onBeforeShow');
+        console.log(event.formId);
+        console.log(event.formConfig);
+      },
+    );
+
+    const navigationListener = refinerEventEmitter.addListener(
+      'onNavigation',
+      event => {
+        console.log('onNavigation');
+        console.log(event.formId);
+        console.log(event.formElement);
+        console.log(event.progress);
+      },
+    );
+
+    const showListener = refinerEventEmitter.addListener('onShow', event => {
+      console.log('onShow');
+      console.log(event.formId);
+    });
+
+    const dismissListener = refinerEventEmitter.addListener(
+      'onDismiss',
+      event => {
+        console.log('onDismiss');
+        console.log(event.formId);
+      },
+    );
+
+    const closeListener = refinerEventEmitter.addListener('onClose', event => {
+      console.log('onClose');
+      console.log(event.formId);
+    });
+
+    const completeListener = refinerEventEmitter.addListener(
+      'onComplete',
+      event => {
+        console.log('onComplete');
+        console.log(event.formId);
+        console.log(event.formData);
+      },
+    );
+
+    const errorListener = refinerEventEmitter.addListener('onError', event => {
+      console.log('onError');
+      console.log(event.message);
+    });
+
+    // Cleanup function to remove listeners when component unmounts
+    return () => {
+      beforeShowListener.remove();
+      navigationListener.remove();
+      showListener.remove();
+      dismissListener.remove();
+      closeListener.remove();
+      completeListener.remove();
+      errorListener.remove();
+    };
+  }, []); // Empty dependency array means this runs once on mount
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
