@@ -1,4 +1,4 @@
-import { NativeModule } from "react-native";
+import { NativeModule, NativeEventEmitter } from "react-native";
 
 export interface RefinerEvents {
   onBeforeShow: {
@@ -43,7 +43,7 @@ export interface RefinerSDKInterface extends NativeModule {
     locale: string | null,
     signature: string | null,
     writeOperation: string | null
-  ) => Promise<void>;
+  ) => void;
 
   /**
    * Set user data without signature verification
@@ -53,7 +53,7 @@ export interface RefinerSDKInterface extends NativeModule {
     userTraits: Record<string, unknown>,
     locale: string | null,
     signature: string | null
-  ) => Promise<void>;
+  ) => void;
 
   /**
    * Initialize the Refiner SDK
@@ -104,6 +104,100 @@ export interface RefinerSDKInterface extends NativeModule {
    * Start a new session
    */
   startSession: () => void;
+
+  /**
+   * @deprecated Use addToResponse instead
+   */
+  attachToResponse: (response: Record<string, unknown> | null) => void;
+
+  /**
+   * Required for RN built in Event Emitter Calls
+   */
+  addListener: (eventName: string) => void;
+
+  /**
+   * Required for RN built in Event Emitter Calls
+   */
+  removeListeners: (count: number) => void;
+
+  /**
+   * Check if the New Architecture is being used
+   */
+  isNewArchitecture: () => boolean;
+
+  /**
+   * Get the current platform
+   */
+  platform: string;
+
+  /**
+   * Set architecture information from JavaScript
+   */
+  setArchitectureInfo?: (isNewArch: boolean) => void;
+
+  /**
+   * Get architecture information from native module
+   */
+  getArchitectureInfo?: () => Promise<boolean>;
+
+  /**
+   * Detect architecture at runtime
+   */
+  detectArchitecture?: () => Promise<boolean>;
+}
+
+// iOS-specific interface (extends the main interface)
+export interface RNRefinerIOSInterface extends RefinerSDKInterface {
+  // iOS has the same methods as Android
+  // The architecture detection methods work the same way
+}
+
+/**
+ * Main Refiner SDK interface
+ */
+export declare const RNRefiner: RefinerSDKInterface;
+
+/**
+ * Event emitter for Refiner SDK events
+ */
+export declare const RNRefinerEventEmitter: NativeEventEmitter;
+
+/**
+ * Default export for backward compatibility
+ */
+declare const _default: RefinerSDKInterface;
+export default _default;
+
+/**
+ * TurboModule spec for New Architecture
+ */
+export interface NativeRNRefinerSpec {
+  initialize(projectId: string, debugMode: boolean): void;
+  setProject(projectId: string): void;
+  identifyUser(
+    userId: string,
+    userTraits: Record<string, unknown>,
+    locale?: string,
+    signature?: string,
+    writeOperation?: string
+  ): void;
+  setUser(
+    userId: string,
+    userTraits: Record<string, unknown>,
+    locale?: string,
+    signature?: string
+  ): void;
+  resetUser(): void;
+  trackEvent(eventName: string): void;
+  trackScreen(screenName: string): void;
+  ping(): void;
+  showForm(formUuid: string, force: boolean): void;
+  dismissForm(formUuid: string): void;
+  closeForm(formUuid: string): void;
+  addToResponse(contextualData: Record<string, unknown>): void;
+  startSession(): void;
+  addListener(eventName: string): void;
+  removeListeners(count: number): void;
 }
 
 declare module "react-native" {

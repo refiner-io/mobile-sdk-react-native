@@ -14,13 +14,13 @@
     "@react-native/gradle-plugin": "^0.76.5",
     "react": "18.3.1",
     "react-native": "^0.76.6",
-    "refiner-react-native": "^1.6.4"
+    "refiner-react-native": "file:.."
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@babel/plugin-transform-flow-strip-types": "^7.25.9",
     "@babel/preset-env": "^7.26.0",
-    "@babel/runtime": "^7.27.4",
+    "@babel/runtime": "^7.28.2",
     "@react-native/babel-preset": "^0.76.6",
     "@react-native/eslint-config": "^0.76.6",
     "@react-native/metro-config": "^0.76.6",

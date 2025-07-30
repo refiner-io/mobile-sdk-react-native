@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -25,10 +25,10 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import {NativeModules, NativeEventEmitter} from 'react-native';
+import RNRefiner from 'refiner-react-native';
+import {NativeEventEmitter} from 'react-native';
 
-const {RNRefiner} = NativeModules;
-const refinerEventEmitter = new NativeEventEmitter(RNRefiner);
+const RNRefinerEventEmitter = new NativeEventEmitter(RNRefiner);
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -62,91 +62,121 @@ function Section({children, title}: SectionProps): JSX.Element {
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const [isModuleLoaded, setIsModuleLoaded] = useState(false);
 
   useEffect(() => {
-    // User traits object
-    const userTraits = {
-      email: 'hello@hello.com',
-      a_number: 123,
-      a_date: '2022-16-04 12:00:00',
-    };
+    // Check module availability
+    if (!RNRefiner) {
+      return;
+    }
 
-    // Identify user
-    RNRefiner.identifyUser('my-user-id', userTraits, null, null);
+    setIsModuleLoaded(true);
 
+    // IMPORTANT: Set up event listeners BEFORE initializing the SDK
+    // This prevents the "Sending event with no listeners registered" warnings
+    // The order matters: listeners -> initialize -> SDK operations
+    let listeners: any[] = [];
 
-    // Add contextual data
-    const contextualData = {
-      some_data: 'hello',
-      some_more_data: 'hello again',
-    };
+    if (RNRefinerEventEmitter) {
+      const beforeShowListener = RNRefinerEventEmitter.addListener(
+        'onBeforeShow',
+        (event: any) => {
+          console.log('onBeforeShow');
+          console.log(event.formId);
+          console.log(event.formConfig);
+        },
+      );
 
-    RNRefiner.addToResponse(contextualData);
+      const navigationListener = RNRefinerEventEmitter.addListener(
+        'onNavigation',
+        (event: any) => {
+          console.log('onNavigation');
+          console.log(event.formId);
+          console.log(event.formElement);
+          console.log(event.progress);
+        },
+      );
 
-    // Show form
-    RNRefiner.showForm('616fc500-5d32-11ea-8fd5-f140dbcb9780', true);
+      const showListener = RNRefinerEventEmitter.addListener(
+        'onShow',
+        (event: any) => {
+          console.log('onShow');
+          console.log(event.formId);
+        },
+      );
 
-    // Event listeners setup
-    const beforeShowListener = refinerEventEmitter.addListener(
-      'onBeforeShow',
-      event => {
-        console.log('onBeforeShow');
-        console.log(event.formId);
-        console.log(event.formConfig);
-      },
-    );
+      const dismissListener = RNRefinerEventEmitter.addListener(
+        'onDismiss',
+        (event: any) => {
+          console.log('onDismiss');
+          console.log(event.formId);
+        },
+      );
 
-    const navigationListener = refinerEventEmitter.addListener(
-      'onNavigation',
-      event => {
-        console.log('onNavigation');
-        console.log(event.formId);
-        console.log(event.formElement);
-        console.log(event.progress);
-      },
-    );
+      const closeListener = RNRefinerEventEmitter.addListener(
+        'onClose',
+        (event: any) => {
+          console.log('onClose');
+          console.log(event.formId);
+        },
+      );
 
-    const showListener = refinerEventEmitter.addListener('onShow', event => {
-      console.log('onShow');
-      console.log(event.formId);
-    });
+      const completeListener = RNRefinerEventEmitter.addListener(
+        'onComplete',
+        (event: any) => {
+          console.log('onComplete');
+          console.log(event.formId);
+          console.log(event.formData);
+        },
+      );
 
-    const dismissListener = refinerEventEmitter.addListener(
-      'onDismiss',
-      event => {
-        console.log('onDismiss');
-        console.log(event.formId);
-      },
-    );
+      const errorListener = RNRefinerEventEmitter.addListener(
+        'onError',
+        (event: any) => {
+          console.log('onError');
+          console.log(event.message);
+        },
+      );
 
-    const closeListener = refinerEventEmitter.addListener('onClose', event => {
-      console.log('onClose');
-      console.log(event.formId);
-    });
+      // Store listeners for cleanup
+      listeners = [
+        beforeShowListener,
+        navigationListener,
+        showListener,
+        dismissListener,
+        closeListener,
+        completeListener,
+        errorListener,
+      ];
+    }
 
-    const completeListener = refinerEventEmitter.addListener(
-      'onComplete',
-      event => {
-        console.log('onComplete');
-        console.log(event.formId);
-        console.log(event.formData);
-      },
-    );
+    try {
+      // User traits object
+      const userTraits = {
+        email: 'hello@hello.com',
+        a_number: 123,
+        a_date: '2022-16-04 12:00:00',
+      };
 
-    const errorListener = refinerEventEmitter.addListener('onError', event => {
-      console.log('onError');
-      console.log(event.message);
-    });
+      // Identify user
+      RNRefiner.identifyUser('my-user-id', userTraits, null, null, null);
+
+      // Add contextual data
+      const contextualData = {
+        some_data: 'hello',
+        some_more_data: 'hello again',
+      };
+
+      RNRefiner.addToResponse(contextualData);
+
+      RNRefiner.showForm('616fc500-5d32-11ea-8fd5-f140dbcb9780', true);
+    } catch (error) {
+      // Handle error silently
+    }
 
     // Cleanup function to remove listeners when component unmounts
     return () => {
-      beforeShowListener.remove();
-      navigationListener.remove();
-      showListener.remove();
-      dismissListener.remove();
-      closeListener.remove();
-      completeListener.remove();
-      errorListener.remove();
+      listeners.forEach(listener => listener.remove());
     };
   }, []); // Empty dependency array means this runs once on mount
 

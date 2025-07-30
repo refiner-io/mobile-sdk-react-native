@@ -1,170 +1,134 @@
+
 package io.refiner.rn
 
 import com.facebook.react.bridge.*
+import com.facebook.react.turbomodule.core.interfaces.TurboModule
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReactContextBaseJavaModule
+import com.facebook.react.bridge.ReactMethod
+import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.Promise
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import io.refiner.Refiner
 import io.refiner.rn.utils.MapUtil
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 
-class RNRefinerModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+class RNRefinerTurboModule(
+    reactContext: ReactApplicationContext
+) : ReactContextBaseJavaModule(reactContext), NativeRNRefinerSpec {
 
     companion object {
         const val NAME = "RNRefiner"
-        private var isNewArchitecture = false
+        private var isNewArchitecture = true
     }
 
     override fun getName(): String = NAME
 
     @ReactMethod
-    fun setArchitectureInfo(isNewArch: Boolean) {
+    override fun setArchitectureInfo(isNewArch: Boolean) {
         isNewArchitecture = isNewArch
     }
 
     @ReactMethod
-    fun getArchitectureInfo(promise: Promise) {
+    override fun getArchitectureInfo(promise: Promise) {
         promise.resolve(isNewArchitecture)
     }
 
     @ReactMethod
-    fun detectArchitecture(promise: Promise) {
-        try {
-            // Check if we're running in a TurboModule environment
-            val hasTurboModuleMethods = this.javaClass.methods.any { 
-                it.name == "getConstants" && it.returnType == Arguments::class.java 
-            }
-            
-            // Check if we have access to TurboModule-specific classes
-            val hasTurboModuleClasses = try {
-                Class.forName("com.facebook.react.turbomodule.core.CallInvokerHolderImpl")
-                true
-            } catch (e: ClassNotFoundException) {
-                false
-            }
-            
-            val detectedArchitecture = hasTurboModuleMethods || hasTurboModuleClasses
-            isNewArchitecture = detectedArchitecture
-            promise.resolve(detectedArchitecture)
-        } catch (e: Exception) {
-            promise.resolve(false)
-        }
+    override fun detectArchitecture(promise: Promise) {
+        promise.resolve(true) // We're in TurboModule, so it's New Architecture
     }
 
     @ReactMethod
-    fun initialize(projectId: String?, debugMode: Boolean?) {
-        projectId?.let { id ->
-            Refiner.initialize(reactApplicationContext.applicationContext, id, debugMode)
-            registerCallbacks()
-        }
+    override fun initialize(projectId: String, debugMode: Boolean) {
+        Refiner.initialize(reactApplicationContext.applicationContext, projectId, debugMode)
+        registerCallbacks()
     }
 
     @ReactMethod
-    fun setProject(projectId: String?) {
-        projectId?.let { id ->
-            Refiner.setProject(id)
-        }
+    override fun setProject(projectId: String) {
+        Refiner.setProject(projectId)
     }
 
     @ReactMethod
-    fun identifyUser(
-        userId: String?,
-        userTraits: ReadableMap?,
+    override fun identifyUser(
+        userId: String,
+        userTraits: ReadableMap,
         locale: String?,
         signature: String?,
         writeOperation: String?
     ) {
-        val userTraitsMap = userTraits?.let { MapUtil.toMap(it) }
-        
-        userId?.let { id ->
-            val operation = writeOperation?.let { Refiner.WriteOperation.valueOf(it) } 
-                ?: Refiner.WriteOperation.APPEND
-            Refiner.identifyUser(id, userTraitsMap, locale, signature, operation)
-        }
+        val userTraitsMap = MapUtil.toMap(userTraits)
+        val operation = writeOperation?.let { Refiner.WriteOperation.valueOf(it) } 
+            ?: Refiner.WriteOperation.APPEND
+        Refiner.identifyUser(userId, userTraitsMap, locale, signature, operation)
     }
 
     @ReactMethod
-    fun setUser(
-        userId: String?,
+    override fun setUser(
+        userId: String,
         userTraits: ReadableMap?,
         locale: String?,
         signature: String?
     ) {
         val userTraitsMap = userTraits?.let { MapUtil.toMap(it) }
-        
-        userId?.let { id ->
-            Refiner.setUser(id, userTraitsMap, locale, signature)
-        }
+        Refiner.setUser(userId, userTraitsMap, locale, signature)
     }
 
     @ReactMethod
-    fun resetUser() {
+    override fun resetUser() {
         Refiner.resetUser()
     }
 
     @ReactMethod
-    fun trackEvent(eventName: String?) {
-        eventName?.let { name ->
-            Refiner.trackEvent(name)
-        }
+    override fun trackEvent(eventName: String) {
+        Refiner.trackEvent(eventName)
     }
 
     @ReactMethod
-    fun trackScreen(screenName: String?) {
-        screenName?.let { name ->
-            Refiner.trackScreen(name)
-        }
+    override fun trackScreen(screenName: String) {
+        Refiner.trackScreen(screenName)
     }
 
     @ReactMethod
-    fun ping() {
+    override fun ping() {
         Refiner.ping()
     }
 
     @ReactMethod
-    fun showForm(formUuid: String?, force: Boolean) {
-        formUuid?.let { uuid ->
-            Refiner.showForm(uuid, force)
-        }
+    override fun showForm(formUuid: String, force: Boolean) {
+        Refiner.showForm(formUuid, force)
     }
 
     @ReactMethod
-    fun dismissForm(formUuid: String?) {
-        formUuid?.let { uuid ->
-            Refiner.dismissForm(uuid)
-        }
+    override fun dismissForm(formUuid: String) {
+        Refiner.dismissForm(formUuid)
     }
 
     @ReactMethod
-    fun closeForm(formUuid: String?) {
-        formUuid?.let { uuid ->
-            Refiner.closeForm(uuid)
-        }
+    override fun closeForm(formUuid: String) {
+        Refiner.closeForm(formUuid)
     }
 
     @ReactMethod
-    fun addToResponse(contextualData: ReadableMap?) {
+    override fun addToResponse(contextualData: ReadableMap?) {
         val contextualDataMap = contextualData?.let { MapUtil.toMap(it) }
         Refiner.addToResponse(contextualDataMap)
     }
 
     @ReactMethod
-    fun startSession() {
+    override fun startSession() {
         Refiner.startSession()
     }
 
-    @Deprecated("Use addToResponse instead", ReplaceWith("addToResponse(contextualData)"))
     @ReactMethod
-    fun attachToResponse(contextualData: ReadableMap?) {
-        addToResponse(contextualData)
-    }
-
-    @ReactMethod
-    fun addListener(eventName: String?) {
+    override fun addListener(eventName: String) {
         // Keep: Required for RN built in Event Emitter Calls.
     }
 
     @ReactMethod
-    fun removeListeners(count: Int?) {
+    override fun removeListeners(count: Double) {
         // Keep: Required for RN built in Event Emitter Calls.
     }
 

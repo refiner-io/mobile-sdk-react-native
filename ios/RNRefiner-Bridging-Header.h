@@ -15,6 +15,17 @@
 #import <React/RCTBridgeModule.h>
 #endif
 
-#import "React/RCTEventEmitter.h"
+#if __has_include("RCTEventEmitter.h")
+#import "RCTEventEmitter.h"
+#else
+#import <React/RCTEventEmitter.h>
+#endif
+
+// New Architecture support
+#ifdef RCT_NEW_ARCH_ENABLED
+#if __has_include("RefinerReactNativeSpec/RefinerReactNativeSpec.h")
+#import "RefinerReactNativeSpec/RefinerReactNativeSpec.h"
+#endif
+#endif
 
 #endif /* RNRefiner_Bridging_Header_h */ 

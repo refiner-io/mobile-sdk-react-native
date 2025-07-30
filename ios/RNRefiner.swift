@@ -2,8 +2,12 @@ import Foundation
 import React
 import RefinerSDK
 
+#if RCT_NEW_ARCH_ENABLED
+import RefinerReactNativeSpec
+#endif
+
 @objc(RNRefiner)
-class RNRefiner: RCTEventEmitter {
+public class RNRefiner: RCTEventEmitter {
     
     private let kRefinerOnBeforeShow = "onBeforeShow"
     private let kRefinerOnNavigation = "onNavigation"
@@ -20,11 +24,11 @@ class RNRefiner: RCTEventEmitter {
     private let kRefinerFormData = "formData"
     private let kRefinerMessage = "message"
     
-    override func methodQueue() -> DispatchQueue! {
+    public func methodQueue() -> DispatchQueue! {
         return DispatchQueue.main
     }
     
-    override func supportedEvents() -> [String]! {
+    public override func supportedEvents() -> [String]! {
         return [
             kRefinerOnBeforeShow,
             kRefinerOnNavigation,
@@ -37,34 +41,72 @@ class RNRefiner: RCTEventEmitter {
     }
     
     @objc
-    override static func requiresMainQueueSetup() -> Bool {
+    public override static func requiresMainQueueSetup() -> Bool {
         return true
+    }
+    
+    @objc
+    public override static func moduleName() -> String! {
+        return "RNRefiner"
     }
     
     // MARK: - Public Methods
     
     @objc(initialize:withDebugMode:)
     func initialize(_ projectId: String, debugMode: Bool) {
-        Refiner.instance.initialize(projectId: projectId, debugMode: debugMode)
-        registerCallbacks()
+        // Register callbacks first, synchronously
+        self.registerCallbacks()
+        
+        // Then initialize the SDK
+        DispatchQueue.main.async {
+            Refiner.instance.initialize(projectId: projectId, debugMode: debugMode)
+        }
     }
     
     @objc(setProject:)
     func setProject(_ projectId: String) {
-        Refiner.instance.setProject(projectId)
+        Refiner.instance.setProject(with: projectId)
     }
     
     @objc(identifyUser:withUserTraits:withLocale:withSignature:withWriteOperation:)
-    func identifyUser(_ userId: String, userTraits: [String: Any]?, locale: String?, signature: String?, writeOperation: String?) {
-        let operation = writeOperation.flatMap { Refiner.WriteOperation(rawValue: $0) } ?? .append
-        let userTraitsMap = userTraits?.toMutableMap()
-        Refiner.instance.identifyUser(userId: userId, userTraits: userTraitsMap, locale: locale, signature: signature, writeOperation: operation)
+    func identifyUser(_ userId: String, userTraits: NSDictionary, locale: String?, signature: String?, writeOperation: String?) {
+        DispatchQueue.main.async {
+            // Convert NSDictionary to Swift Dictionary
+            var userTraitsMap: [String: Any] = [:]
+            for (key, value) in userTraits {
+                if let stringKey = key as? String {
+                    userTraitsMap[stringKey] = value
+                }
+            }
+            
+            // Try to call Refiner SDK with error handling
+            do {
+                let operation: Refiner.WriteOperation
+                if let writeOp = writeOperation, !writeOp.isEmpty {
+                    operation = Refiner.WriteOperation(rawValue: writeOp) ?? .append
+                } else {
+                    operation = .append
+                }
+                
+                try? Refiner.instance.identifyUser(
+                    userId: userId,
+                    userTraits: userTraitsMap,
+                    locale: locale,
+                    signature: signature,
+                    writeOperation: operation.rawValue
+                )
+            } catch {
+                // Handle error silently
+            }
+        }
     }
     
     @objc(setUser:withUserTraits:withLocale:withSignature:)
-    func setUser(_ userId: String, userTraits: [String: Any]?, locale: String?, signature: String?) {
-        let userTraitsMap = userTraits?.toMutableMap()
-        Refiner.instance.setUser(userId: userId, userTraits: userTraitsMap, locale: locale, signature: signature)
+    func setUser(_ userId: String, userTraits: NSDictionary?, locale: String?, signature: String?) {
+        DispatchQueue.main.async {
+            let userTraitsMap = userTraits?.toSwiftDictionary() ?? [:]
+            try? Refiner.instance.setUser(userId: userId, userTraits: userTraitsMap, locale: locale, signature: signature)
+        }
     }
     
     @objc
@@ -89,23 +131,31 @@ class RNRefiner: RCTEventEmitter {
     
     @objc(showForm:withForce:)
     func showForm(_ formUuid: String, force: Bool) {
-        Refiner.instance.showForm(uuid: formUuid, force: force)
+        DispatchQueue.main.async {
+            Refiner.instance.showForm(uuid: formUuid, force: force)
+        }
     }
     
     @objc(dismissForm:)
     func dismissForm(_ formUuid: String) {
-        Refiner.instance.dismissForm(uuid: formUuid)
+        DispatchQueue.main.async {
+            Refiner.instance.dismissForm(uuid: formUuid)
+        }
     }
     
     @objc(closeForm:)
     func closeForm(_ formUuid: String) {
-        Refiner.instance.closeForm(uuid: formUuid)
+        DispatchQueue.main.async {
+            Refiner.instance.closeForm(uuid: formUuid)
+        }
     }
     
     @objc(addToResponse:)
-    func addToResponse(_ contextualData: [String: Any]?) {
-        let contextualDataMap = contextualData?.toMutableMap()
-        Refiner.instance.addToResponse(data: contextualDataMap)
+    func addToResponse(_ contextualData: NSDictionary?) {
+        DispatchQueue.main.async {
+            let contextualDataMap = contextualData?.toSwiftDictionary() ?? [:]
+            Refiner.instance.addToResponse(data: contextualDataMap)
+        }
     }
     
     @objc
@@ -113,24 +163,53 @@ class RNRefiner: RCTEventEmitter {
         Refiner.instance.startSession()
     }
     
+    // MARK: - Architecture Detection Methods
+    
+    @objc(getArchitectureInfo:rejecter:)
+    func getArchitectureInfo(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+        #if RCT_NEW_ARCH_ENABLED
+            resolve(true)
+        #else
+            resolve(false)
+        #endif
+    }
+    
+    @objc(setArchitectureInfo:)
+    func setArchitectureInfo(_ isNewArch: Bool) {
+        // Store architecture info if needed for future use
+        // Currently using compile-time detection, but this allows runtime override
+    }
+    
+    @objc(detectArchitecture:rejecter:)
+    func detectArchitecture(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+        #if RCT_NEW_ARCH_ENABLED
+            resolve(true)
+        #else
+            resolve(false)
+        #endif
+    }
+    
     // MARK: - Deprecated Methods
     
     @objc(attachToResponse:)
     func attachToResponse(_ contextualData: [String: Any]?) {
-        // Deprecated: Use addToResponse instead
-        addToResponse(contextualData)
+        DispatchQueue.main.async {
+            self.addToResponse(contextualData as NSDictionary?)
+        }
     }
     
     // MARK: - Event Emitter Methods
     
     @objc(addListener:)
-    func addListener(_ eventName: String) {
-        // Required for RN built in Event Emitter Calls
+    public override func addListener(_ eventName: String) {
+        // Call super to properly register the listener with RCTEventEmitter
+        super.addListener(eventName)
     }
     
     @objc(removeListeners:)
-    func removeListeners(_ count: Int) {
-        // Required for RN built in Event Emitter Calls
+    public override func removeListeners(_ count: Double) {
+        // Call super to properly remove listeners with RCTEventEmitter
+        super.removeListeners(count)
     }
     
     // MARK: - Private Methods
@@ -209,7 +288,10 @@ class RNRefiner: RCTEventEmitter {
     }
     
     private func emitEventInternal(_ eventName: String, body: [String: Any]) {
-        sendEvent(withName: eventName, body: body)
+        // Add a small delay to ensure JavaScript listeners are fully registered
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.sendEvent(withName: eventName, body: body)
+        }
     }
     
     private func serializeToJSON(_ object: Any?) -> String {
@@ -224,7 +306,155 @@ class RNRefiner: RCTEventEmitter {
     }
 }
 
+#if RCT_NEW_ARCH_ENABLED
+// MARK: - TurboModule Support
+extension RNRefiner: NativeRNRefinerSpec {
+    func initialize(_ projectId: String, debugMode: Bool) -> Void {
+        // Register callbacks first, synchronously
+        self.registerCallbacks()
+        
+        // Then initialize the SDK
+        DispatchQueue.main.async {
+            Refiner.instance.initialize(projectId: projectId, debugMode: debugMode)
+        }
+    }
+    
+    func setProject(_ projectId: String) -> Void {
+        Refiner.instance.setProject(with: projectId)
+    }
+    
+    func identifyUser(_ userId: String, userTraits: NSDictionary, locale: String?, signature: String?, writeOperation: String?) -> Void {
+        DispatchQueue.main.async {
+            // Convert NSDictionary to Swift Dictionary
+            var userTraitsMap: [String: Any] = [:]
+            for (key, value) in userTraits {
+                if let stringKey = key as? String {
+                    userTraitsMap[stringKey] = value
+                }
+            }
+            
+            // Check if Refiner SDK is available
+            if Refiner.instance != nil {
+                // Try to call Refiner SDK with error handling
+                do {
+                    let operation: Refiner.WriteOperation
+                    if let writeOp = writeOperation, !writeOp.isEmpty {
+                        operation = Refiner.WriteOperation(rawValue: writeOp) ?? .append
+                    } else {
+                        operation = .append
+                    }
+                    
+                    try? Refiner.instance.identifyUser(
+                        userId: userId,
+                        userTraits: userTraitsMap,
+                        locale: locale,
+                        signature: signature,
+                        writeOperation: operation.rawValue
+                    )
+                } catch {
+                    // Handle error silently
+                }
+            }
+        }
+    }
+    
+    func setUser(_ userId: String, userTraits: NSDictionary?, locale: String?, signature: String?) -> Void {
+        DispatchQueue.main.async {
+            let userTraitsMap = userTraits?.toSwiftDictionary() ?? [:]
+            try? Refiner.instance.setUser(userId: userId, userTraits: userTraitsMap, locale: locale, signature: signature)
+        }
+    }
+    
+    func resetUser() -> Void {
+        Refiner.instance.resetUser()
+    }
+    
+    func trackEvent(_ eventName: String) -> Void {
+        Refiner.instance.trackEvent(name: eventName)
+    }
+    
+    func trackScreen(_ screenName: String) -> Void {
+        Refiner.instance.trackScreen(name: screenName)
+    }
+    
+    func ping() -> Void {
+        Refiner.instance.ping()
+    }
+    
+    func showForm(_ formUuid: String, force: Bool) -> Void {
+        DispatchQueue.main.async {
+            Refiner.instance.showForm(uuid: formUuid, force: force)
+        }
+    }
+    
+    func dismissForm(_ formUuid: String) -> Void {
+        DispatchQueue.main.async {
+            Refiner.instance.dismissForm(uuid: formUuid)
+        }
+    }
+    
+    func closeForm(_ formUuid: String) -> Void {
+        DispatchQueue.main.async {
+            Refiner.instance.closeForm(uuid: formUuid)
+        }
+    }
+    
+    func addToResponse(_ contextualData: NSDictionary?) -> Void {
+        DispatchQueue.main.async {
+            let contextualDataMap = contextualData?.toSwiftDictionary() ?? [:]
+            Refiner.instance.addToResponse(data: contextualDataMap)
+        }
+    }
+    
+    func startSession() -> Void {
+        Refiner.instance.startSession()
+    }
+    
+    func addListener(_ eventName: String) -> Void {
+        // Required for RN built in Event Emitter Calls
+    }
+    
+    func removeListeners(_ count: Double) -> Void {
+        // Required for RN built in Event Emitter Calls
+    }
+    
+    // Architecture detection methods for TurboModule
+    func getArchitectureInfo(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
+        #if RCT_NEW_ARCH_ENABLED
+            resolve(true)
+        #else
+            resolve(false)
+        #endif
+    }
+    
+    func setArchitectureInfo(_ isNewArch: Bool) -> Void {
+        // Store architecture info if needed for future use
+        // Currently using compile-time detection, but this allows runtime override
+    }
+    
+    func detectArchitecture(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
+        #if RCT_NEW_ARCH_ENABLED
+            resolve(true)
+        #else
+            resolve(false)
+        #endif
+    }
+}
+#endif
+
 // MARK: - Extensions
+
+extension NSDictionary {
+    func toSwiftDictionary() -> [String: Any] {
+        var result: [String: Any] = [:]
+        for (key, value) in self {
+            if let stringKey = key as? String {
+                result[stringKey] = value
+            }
+        }
+        return result
+    }
+}
 
 extension Dictionary where Key == String, Value == Any {
     func toMutableMap() -> [String: Any] {

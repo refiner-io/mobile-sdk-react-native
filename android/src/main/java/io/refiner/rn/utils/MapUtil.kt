@@ -25,8 +25,8 @@ object MapUtil {
                 ReadableType.Boolean -> jsonObject.put(key, readableMap.getBoolean(key))
                 ReadableType.Number -> jsonObject.put(key, readableMap.getDouble(key))
                 ReadableType.String -> jsonObject.put(key, readableMap.getString(key))
-                ReadableType.Map -> jsonObject.put(key, toJSONObject(readableMap.getMap(key)))
-                ReadableType.Array -> jsonObject.put(key, ArrayUtil.toJSONArray(readableMap.getArray(key)))
+                ReadableType.Map -> jsonObject.put(key, toJSONObject(readableMap.getMap(key)!!))
+                ReadableType.Array -> jsonObject.put(key, ArrayUtil.toJSONArray(readableMap.getArray(key)!!))
             }
         }
 
@@ -34,8 +34,8 @@ object MapUtil {
     }
 
     @Throws(JSONException::class)
-    fun toMap(jsonObject: JSONObject): Map<String, Any?> {
-        val map = mutableMapOf<String, Any?>()
+    fun toMap(jsonObject: JSONObject): LinkedHashMap<String, Any> {
+        val map = LinkedHashMap<String, Any>()
         val iterator = jsonObject.keys()
 
         while (iterator.hasNext()) {
@@ -48,14 +48,14 @@ object MapUtil {
                 else -> value
             }
 
-            map[key] = processedValue
+            map[key] = processedValue ?: ""
         }
 
         return map
     }
 
-    fun toMap(readableMap: ReadableMap): Map<String, Any?> {
-        val map = mutableMapOf<String, Any?>()
+    fun toMap(readableMap: ReadableMap): LinkedHashMap<String, Any> {
+        val map = LinkedHashMap<String, Any>()
         val iterator: ReadableMapKeySetIterator = readableMap.keySetIterator()
 
         while (iterator.hasNextKey()) {
@@ -63,15 +63,15 @@ object MapUtil {
             val type = readableMap.getType(key)
 
             val value = when (type) {
-                ReadableType.Null -> null
+                ReadableType.Null -> ""
                 ReadableType.Boolean -> readableMap.getBoolean(key)
                 ReadableType.Number -> readableMap.getDouble(key)
                 ReadableType.String -> readableMap.getString(key)
-                ReadableType.Map -> toMap(readableMap.getMap(key))
-                ReadableType.Array -> ArrayUtil.toArray(readableMap.getArray(key))
+                ReadableType.Map -> toMap(readableMap.getMap(key)!!)
+                ReadableType.Array -> ArrayUtil.toArray(readableMap.getArray(key)!!)
             }
 
-            map[key] = value
+            map[key] = value ?: ""
         }
 
         return map
@@ -88,7 +88,7 @@ object MapUtil {
                 is Int -> writableMap.putInt(key, value)
                 is String -> writableMap.putString(key, value)
                 is Map<*, *> -> writableMap.putMap(key, toWritableMap(value as Map<String, Any?>))
-                is Array<*> -> writableMap.putArray(key, ArrayUtil.toWritableArray(value))
+                is Array<*> -> writableMap.putArray(key, ArrayUtil.toWritableArray(value as Array<Any?>))
                 else -> writableMap.putNull(key)
             }
         }

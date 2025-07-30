@@ -81,7 +81,7 @@ object ArrayUtil {
                 is Int -> writableArray.pushInt(value)
                 is String -> writableArray.pushString(value)
                 is Map<*, *> -> writableArray.pushMap(MapUtil.toWritableMap(value as Map<String, Any?>))
-                is Array<*> -> writableArray.pushArray(toWritableArray(value))
+                is Array<*> -> writableArray.pushArray(toWritableArray(value as Array<Any?>))
                 else -> writableArray.pushNull()
             }
         }

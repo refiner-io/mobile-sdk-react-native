@@ -21,16 +21,36 @@
   },
   "license": "MIT",
   "private": false,
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "src/",
+    "android/",
+    "ios/",
+    "index.js",
+    "index.d.ts",
+    "refiner-react-native.podspec",
+    "README.md",
+    "package.json"
+  ],
   "peerDependencies": {
     "react-native": "^0.76.6"
   },
-  "types": "index.d.ts",
   "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/plugin-transform-runtime": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
     "@react-native-community/cli": "^16.0.2",
     "@react-native-community/cli-platform-android": "^16.0.2",
-    "@react-native-community/cli-platform-ios": "^16.0.2"
+    "@react-native-community/cli-platform-ios": "^16.0.2",
+    "@react-native/codegen": "^0.80.2",
+    "react-native": "^0.76.6",
+    "react-native-codegen": "^0.70.7",
+    "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@react-native-community/cli-platform-android": "^16.0.2"
+    "@babel/runtime": "^7.28.2",
+    "@react-native-community/cli-platform-android": "^16.0.2",
+    "react-native": "^0.76.6"
   }
 }
