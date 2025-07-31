@@ -34,9 +34,8 @@ Initialize the SDK in your application with the needed configuration parameters.
 The second parameter is for activating a debug mode during development. If activated, the SDK will log all interactions with the Refiner backend servers. 
 
 ```javascript
-import { NativeModules,NativeEventEmitter } from 'react-native';
-
-export const RNRefiner = NativeModules.RNRefiner;
+import RNRefiner from 'refiner-react-native';
+import {NativeEventEmitter} from 'react-native';
 
 export const RNRefinerEventEmitter = new NativeEventEmitter(RNRefiner);
 
