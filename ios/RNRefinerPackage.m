@@ -1,8 +1,8 @@
 //
-//  RNRefiner.m
+//  RNRefinerPackage.m
 //  RNRefiner
 //
-//  Objective-C wrapper for Swift RNRefiner module
+//  Module registration for RNRefiner
 //
 
 #import <React/RCTBridgeModule.h>

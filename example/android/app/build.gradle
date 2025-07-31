@@ -114,4 +114,6 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    
+    implementation project(':refiner-react-native')
 }
