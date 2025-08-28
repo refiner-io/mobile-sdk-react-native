@@ -87,13 +87,6 @@ export interface Spec extends TurboModule {
    * Required for RN built in Event Emitter Calls
    */
   removeListeners(count: number): void;
-
-  /**
-   * Architecture detection methods
-   */
-  getArchitectureInfo(): Promise<boolean>;
-  setArchitectureInfo(isNewArch: boolean): void;
-  detectArchitecture(): Promise<boolean>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>("RNRefiner");

@@ -11,14 +11,20 @@ class RNRefinerModule(reactContext: ReactApplicationContext) : ReactContextBaseJ
 
     companion object {
         const val NAME = "RNRefiner"
-        private var isNewArchitecture = false
+        private val isNewArchitecture = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
+    }
+
+    init {
+        android.util.Log.d("RNRefinerModule", "RNRefinerModule instantiated, isNewArch: $isNewArchitecture")
     }
 
     override fun getName(): String = NAME
 
     @ReactMethod
+    @Suppress("UNUSED_PARAMETER")
     fun setArchitectureInfo(isNewArch: Boolean) {
-        isNewArchitecture = isNewArch
+        // Architecture is determined at build time via BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
+        // This method is kept for compatibility but doesn't change the architecture
     }
 
     @ReactMethod
@@ -28,30 +34,12 @@ class RNRefinerModule(reactContext: ReactApplicationContext) : ReactContextBaseJ
 
     @ReactMethod
     fun detectArchitecture(promise: Promise) {
-        try {
-            // Check if we're running in a TurboModule environment
-            val hasTurboModuleMethods = this.javaClass.methods.any { 
-                it.name == "getConstants" && it.returnType == Arguments::class.java 
-            }
-            
-            // Check if we have access to TurboModule-specific classes
-            val hasTurboModuleClasses = try {
-                Class.forName("com.facebook.react.turbomodule.core.CallInvokerHolderImpl")
-                true
-            } catch (e: ClassNotFoundException) {
-                false
-            }
-            
-            val detectedArchitecture = hasTurboModuleMethods || hasTurboModuleClasses
-            isNewArchitecture = detectedArchitecture
-            promise.resolve(detectedArchitecture)
-        } catch (e: Exception) {
-            promise.resolve(false)
-        }
+        promise.resolve(isNewArchitecture)
     }
 
     @ReactMethod
     fun initialize(projectId: String?, debugMode: Boolean?) {
+        android.util.Log.d("RNRefinerModule", "initialize called with projectId: $projectId, debugMode: $debugMode")
         projectId?.let { id ->
             Refiner.initialize(reactApplicationContext.applicationContext, id, debugMode)
             registerCallbacks()
@@ -122,6 +110,7 @@ class RNRefinerModule(reactContext: ReactApplicationContext) : ReactContextBaseJ
 
     @ReactMethod
     fun showForm(formUuid: String?, force: Boolean) {
+        android.util.Log.d("RNRefinerModule", "showForm called with formUuid: $formUuid, force: $force")
         formUuid?.let { uuid ->
             Refiner.showForm(uuid, force)
         }
@@ -159,11 +148,13 @@ class RNRefinerModule(reactContext: ReactApplicationContext) : ReactContextBaseJ
     }
 
     @ReactMethod
+    @Suppress("UNUSED_PARAMETER")
     fun addListener(eventName: String?) {
         // Keep: Required for RN built in Event Emitter Calls.
     }
 
     @ReactMethod
+    @Suppress("UNUSED_PARAMETER")
     fun removeListeners(count: Int?) {
         // Keep: Required for RN built in Event Emitter Calls.
     }

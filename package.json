@@ -29,6 +29,7 @@
     "ios/",
     "index.js",
     "index.d.ts",
+    "react-native.config.js",
     "refiner-react-native.podspec",
     "README.md",
     "package.json"
