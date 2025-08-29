@@ -1,4 +1,12 @@
 buildscript {
+    ext.getExtOrDefault = {name ->
+        return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties['RNRefiner_' + name]
+    }
+
+    ext.getExtOrDefaultWithFallback = {name, fallback ->
+        return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties['RNRefiner_' + name] ?: fallback)
+    }
+
     repositories {
         maven {
             url("$rootDir/../node_modules/react-native/android")
@@ -8,25 +16,31 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.1.4'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.10'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${getExtOrDefaultWithFallback('kotlinVersion', '2.0.21')}"
     }
 }
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
+apply plugin: "com.facebook.react"
+
+def getExtOrIntegerDefault(name) {
+    return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["RNRefiner_" + name] ?: "35").toInteger()
+}
+
 def isNewArchitectureEnabled() {
     // Strategy 1: Check if the consuming app has set this property
     if (rootProject.hasProperty("newArchEnabled")) {
         return rootProject.getProperty("newArchEnabled") == "true"
     }
-    
+
     // Strategy 2: Check if we're in a React Native project with New Architecture
     if (rootProject.hasProperty("reactNativeArchitectures")) {
         def architectures = rootProject.getProperty("reactNativeArchitectures")
         return architectures.contains("fabric") || architectures.contains("turbo")
     }
-    
+
     // Strategy 3: Check for React Native Gradle Plugin properties
     if (rootProject.hasProperty("reactNativeDir")) {
         def reactNativeDir = rootProject.getProperty("reactNativeDir")
@@ -34,56 +48,66 @@ def isNewArchitectureEnabled() {
         if (packageJson.exists()) {
             def packageJsonText = packageJson.text
             // Check for New Architecture flags in package.json
-            if (packageJsonText.contains('"newArchEnabled": true') || 
+            if (packageJsonText.contains('"newArchEnabled": true') ||
                 packageJsonText.contains('"fabric": true') ||
                 packageJsonText.contains('"turbo": true')) {
                 return true
             }
         }
     }
-    
+
     // Strategy 4: Check for common New Architecture environment variables
     def envNewArch = System.getenv("RCT_NEW_ARCH_ENABLED")
     if (envNewArch != null) {
         return envNewArch == "1" || envNewArch == "true"
     }
-    
+
     // Default to false for backward compatibility
     return false
 }
 
-android {
-    compileSdk 35
-    buildToolsVersion = "35.0.0"
+def kotlin_version = getExtOrDefaultWithFallback("kotlinVersion", "2.0.21")
 
-    defaultConfig {
-        minSdkVersion 21
-        targetSdk 35
+android {
+    namespace "io.refiner.rn"
+
+    compileSdkVersion getExtOrIntegerDefault("compileSdkVersion") ?: 35
+
+        defaultConfig {
+        minSdkVersion getExtOrIntegerDefault("minSdkVersion") ?: 21
+        targetSdkVersion getExtOrIntegerDefault("targetSdkVersion") ?: 35
         versionCode 1
         versionName "1.7.0"
-        
+
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
     }
 
+    buildFeatures {
+        buildConfig true
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs += [
+                "build/generated/source/codegen/java"
+            ]
+        }
+    }
+
     lintOptions {
+        disable "GradleCompatible"
         abortOnError false
     }
-    namespace = "io.refiner.rn"
-    
+
     // Use Java 17 for New Architecture compatibility
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    
+
     kotlinOptions {
         jvmTarget = '17'
     }
-    
-    buildFeatures {
-        buildConfig true
-    }
-    
 
 }
 
@@ -99,8 +123,14 @@ repositories {
 }
 
 dependencies {
-    implementation "com.facebook.react:react-native:+"
+    implementation "com.facebook.react:react-android:+"
     implementation 'io.refiner:refiner:1.5.7'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
+}
+
+react {
+    jsRootDir = file("../src/")
+    libraryName = "RNRefiner"
+    codegenJavaPackageName = "io.refiner.rn"
 }

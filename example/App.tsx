@@ -151,6 +151,9 @@ function App(): JSX.Element {
     }
 
     try {
+      // Initialize the Refiner SDK (required for proper functionality)
+      RNRefiner.initialize('56421950-5d32-11ea-9bb4-9f1f1a987a49', true);
+
       // User traits object
       const userTraits = {
         email: 'hello@hello.com',

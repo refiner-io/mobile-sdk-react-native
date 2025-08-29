@@ -9,35 +9,20 @@ import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.Promise
 import com.facebook.react.modules.core.DeviceEventManagerModule
+import com.facebook.react.module.annotations.ReactModule
 import io.refiner.Refiner
 import io.refiner.rn.utils.MapUtil
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 
+@ReactModule(name = RNRefinerTurboModule.NAME)
 class RNRefinerTurboModule(
     reactContext: ReactApplicationContext
-) : ReactContextBaseJavaModule(reactContext), NativeRNRefinerSpec {
+) : NativeRNRefinerSpec(reactContext) {
 
     companion object {
         const val NAME = "RNRefiner"
-        private var isNewArchitecture = true
-    }
-
-    override fun getName(): String = NAME
-
-    @ReactMethod
-    override fun setArchitectureInfo(isNewArch: Boolean) {
-        isNewArchitecture = isNewArch
-    }
-
-    @ReactMethod
-    override fun getArchitectureInfo(promise: Promise) {
-        promise.resolve(isNewArchitecture)
-    }
-
-    @ReactMethod
-    override fun detectArchitecture(promise: Promise) {
-        promise.resolve(true) // We're in TurboModule, so it's New Architecture
+        private val isNewArchitecture = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
     }
 
     @ReactMethod
@@ -98,7 +83,11 @@ class RNRefinerTurboModule(
 
     @ReactMethod
     override fun showForm(formUuid: String, force: Boolean) {
-        Refiner.showForm(formUuid, force)
+        try {
+            Refiner.showForm(formUuid, force)
+        } catch (e: Exception) {
+            // Handle error silently in production
+        }
     }
 
     @ReactMethod
