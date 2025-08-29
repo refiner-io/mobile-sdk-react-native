@@ -77,7 +77,7 @@ android {
         minSdkVersion getExtOrIntegerDefault("minSdkVersion") ?: 21
         targetSdkVersion getExtOrIntegerDefault("targetSdkVersion") ?: 35
         versionCode 1
-        versionName "1.7.0"
+        versionName "1.7.2"
 
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
     }
@@ -124,7 +124,7 @@ repositories {
 
 dependencies {
     implementation "com.facebook.react:react-android:+"
-    implementation 'io.refiner:refiner:1.5.7'
+    implementation 'io.refiner:refiner:1.5.8'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
 }
