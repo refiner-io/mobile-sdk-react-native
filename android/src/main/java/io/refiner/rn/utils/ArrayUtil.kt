@@ -22,8 +22,13 @@ object ArrayUtil {
                 ReadableType.Boolean -> jsonArray.put(i, readableArray.getBoolean(i))
                 ReadableType.Number -> jsonArray.put(i, readableArray.getDouble(i))
                 ReadableType.String -> jsonArray.put(i, readableArray.getString(i))
-                ReadableType.Map -> jsonArray.put(i, MapUtil.toJSONObject(readableArray.getMap(i)))
-                ReadableType.Array -> jsonArray.put(i, toJSONArray(readableArray.getArray(i)))
+                ReadableType.Map -> jsonArray.put(
+                    i,
+                    readableArray.getMap(i)?.let { MapUtil.toJSONObject(it) })
+
+                ReadableType.Array -> jsonArray.put(
+                    i,
+                    readableArray.getArray(i)?.let { toJSONArray(it) })
             }
         }
 
@@ -60,8 +65,8 @@ object ArrayUtil {
                 ReadableType.Boolean -> readableArray.getBoolean(i)
                 ReadableType.Number -> readableArray.getDouble(i)
                 ReadableType.String -> readableArray.getString(i)
-                ReadableType.Map -> MapUtil.toMap(readableArray.getMap(i))
-                ReadableType.Array -> toArray(readableArray.getArray(i))
+                ReadableType.Map -> readableArray.getMap(i)?.let { MapUtil.toMap(it) }
+                ReadableType.Array -> readableArray.getArray(i)?.let { toArray(it) }
             }
 
             array[i] = value

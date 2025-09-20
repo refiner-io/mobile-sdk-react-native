@@ -17,16 +17,40 @@ import {
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
 import RNRefiner from 'refiner-react-native';
 import {NativeEventEmitter} from 'react-native';
+
+// Define Colors object
+const Colors = {
+  white: '#FFFFFF',
+  black: '#000000',
+  light: '#F3F3F3',
+  dark: '#1C1C1E',
+  lighter: '#F9F9F9',
+  darker: '#2C2C2E',
+};
+
+// Simple Header component
+const Header = () => (
+  <View style={{padding: 20, backgroundColor: '#61DAFB'}}>
+    <Text style={{fontSize: 24, fontWeight: 'bold', textAlign: 'center'}}>
+      React Native Refiner Example
+    </Text>
+  </View>
+);
+
+// Simple instructions components
+const ReloadInstructions = () => (
+  <Text>Press R to reload or shake for dev menu.</Text>
+);
+
+const DebugInstructions = () => (
+  <Text>Press D to open developer menu.</Text>
+);
+
+const LearnMoreLinks = () => (
+  <Text style={{color: '#61DAFB'}}>Visit React Native docs to learn more!</Text>
+);
 
 const RNRefinerEventEmitter = new NativeEventEmitter(RNRefiner);
 
