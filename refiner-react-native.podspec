@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   # Source files configuration
   if ENV['RCT_NEW_ARCH_ENABLED'] == '1'
     s.source_files = "ios/**/*.{h,m,swift}", "ios/*.{h,m,swift}"
-    s.exclude_files = "ios/RefinerReactNativeSpec/**/*"
+    # Do not exclude RefinerReactNativeSpec for New Architecture
     s.pod_target_xcconfig = {
       "DEFINES_MODULE" => "YES",
       "SWIFT_OBJC_INTERFACE_HEADER_NAME" => "RNRefiner-Swift.h",
