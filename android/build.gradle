@@ -124,7 +124,7 @@ repositories {
 
 dependencies {
     implementation "com.facebook.react:react-android:+"
-    implementation 'io.refiner:refiner:1.5.8'
+    implementation 'io.refiner:refiner:1.5.9'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
 }
