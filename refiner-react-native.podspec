@@ -16,7 +16,21 @@ Pod::Spec.new do |s|
   s.static_framework = true
 
   # Source files configuration
-  if ENV['RCT_NEW_ARCH_ENABLED'] == '1'
+  # Defaults to New Architecture (aligned with React Native 0.82+)
+  # Set RCT_NEW_ARCH_ENABLED=0 to explicitly use Legacy Architecture
+  if ENV['RCT_NEW_ARCH_ENABLED'] == '0'
+    # Legacy Architecture (excludes New Architecture spec files)
+    s.source_files = "ios/**/*.{h,m,swift}", "ios/*.{h,m,swift}"
+    s.exclude_files = "ios/RefinerReactNativeSpec/**/*"
+    s.pod_target_xcconfig = {
+      "DEFINES_MODULE" => "YES",
+      "SWIFT_OBJC_INTERFACE_HEADER_NAME" => "RNRefiner-Swift.h",
+      "SWIFT_VERSION" => "5.0",
+      # "SWIFT_OBJC_BRIDGING_HEADER" => "$(PODS_ROOT)/Headers/Public/refiner-react-native/RNRefiner-Bridging-Header.h",
+      "SWIFT_INSTALL_OBJC_HEADER" => "YES"
+    }
+  else
+    # New Architecture (default)
     s.source_files = "ios/**/*.{h,m,swift}", "ios/*.{h,m,swift}"
     # Do not exclude RefinerReactNativeSpec for New Architecture
     s.pod_target_xcconfig = {
@@ -24,16 +38,6 @@ Pod::Spec.new do |s|
       "SWIFT_OBJC_INTERFACE_HEADER_NAME" => "RNRefiner-Swift.h",
       "CLANG_CXX_LANGUAGE_STANDARD" => "c++17",
       "CLANG_CXX_LIBRARY" => "libc++",
-      "SWIFT_VERSION" => "5.0",
-      # "SWIFT_OBJC_BRIDGING_HEADER" => "$(PODS_ROOT)/Headers/Public/refiner-react-native/RNRefiner-Bridging-Header.h",
-      "SWIFT_INSTALL_OBJC_HEADER" => "YES"
-    }
-  else
-    s.source_files = "ios/**/*.{h,m,swift}", "ios/*.{h,m,swift}"
-    s.exclude_files = "ios/RefinerReactNativeSpec/**/*"
-    s.pod_target_xcconfig = {
-      "DEFINES_MODULE" => "YES",
-      "SWIFT_OBJC_INTERFACE_HEADER_NAME" => "RNRefiner-Swift.h",
       "SWIFT_VERSION" => "5.0",
       # "SWIFT_OBJC_BRIDGING_HEADER" => "$(PODS_ROOT)/Headers/Public/refiner-react-native/RNRefiner-Bridging-Header.h",
       "SWIFT_INSTALL_OBJC_HEADER" => "YES"
@@ -56,12 +60,13 @@ Pod::Spec.new do |s|
     install_modules_dependencies(s)
   else
     s.dependency "React-Core"
-    
+
     # The following line is only needed for the old architecture.
     # In the new architecture, this has been replaced by `install_modules_dependencies`.
     s.dependency "React-RCTEventEmitter"
-    
-    if ENV['RCT_NEW_ARCH_ENABLED'] == '1'
+
+    # New Architecture dependencies (enabled by default unless explicitly disabled)
+    if ENV['RCT_NEW_ARCH_ENABLED'] != '0'
       s.dependency "React-Codegen"
       s.dependency "RCT-Folly"
       s.dependency "RCTRequired"
