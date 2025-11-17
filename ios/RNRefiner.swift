@@ -2,10 +2,6 @@ import Foundation
 import React
 import RefinerSDK
 
-#if RCT_NEW_ARCH_ENABLED
-import RefinerReactNativeSpec
-#endif
-
 @objc(RNRefiner)
 public class RNRefiner: RCTEventEmitter {
     

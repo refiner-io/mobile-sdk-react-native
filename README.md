@@ -23,6 +23,48 @@ Refiner helps you to understand who your users really are, what they need and ho
 - Run command `pod install` in your ios directory
 
 
+## React Native Architecture
+
+This SDK supports both React Native's **New Architecture** and **Legacy Architecture**.
+
+### New Architecture (Default)
+
+Starting with version 1.7.5, the SDK **defaults to React Native's New Architecture**, aligning with React Native 0.82+ where New Architecture is mandatory.
+
+If you're using React Native 0.82 or later, no additional configuration is needed. The SDK will automatically use the New Architecture.
+
+### Legacy Architecture
+
+If you're using an older version of React Native (pre-0.82) and need Legacy Architecture support, you can explicitly enable it:
+
+**For iOS**, create or update `ios/.xcode.env.local` file:
+
+```bash
+export RCT_NEW_ARCH_ENABLED=0
+```
+
+Then run:
+
+```bash
+cd ios && pod install
+```
+
+**For Android**, update `android/gradle.properties`:
+
+```properties
+newArchEnabled=false
+```
+
+### Verifying Your Architecture
+
+You can verify which architecture is being used by checking the build logs:
+
+- **iOS**: Look for `RCT_NEW_ARCH_ENABLED=1` in Xcode build settings
+- **Android**: Check `newArchEnabled` in gradle.properties
+
+For more information about React Native's New Architecture, visit the [official React Native documentation](https://reactnative.dev/docs/new-architecture-intro).
+
+
 ## 2) Usage
 
 Visit our [documentation](https://refiner.io/docs/kb/mobile-sdk/mobile-sdk-reference/) for more information about how to use the SDK methods.
