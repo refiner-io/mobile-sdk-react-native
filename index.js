@@ -110,7 +110,7 @@ const createStubModule = () => {
     removeListeners: stubMethod("removeListeners"),
     attachToResponse: stubMethod("attachToResponse"),
     isNewArchitecture: () => false,
-    platform: Platform.OS,
+    get platform() { return Platform.OS; },
   };
 };
 
@@ -227,8 +227,8 @@ const createRNRefinerWrapper = (nativeModule) => {
     // Architecture detection helper
     isNewArchitecture: () => isNewArchitecture,
 
-    // Platform info
-    platform: Platform.OS,
+    // Platform info (use getter to defer Platform.OS access)
+    get platform() { return Platform.OS; },
   };
 };
 

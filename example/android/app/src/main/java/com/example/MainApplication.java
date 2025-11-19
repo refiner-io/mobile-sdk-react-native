@@ -45,7 +45,7 @@ public class MainApplication extends Application implements ReactApplication {
                 }
 
                 @Override
-                protected boolean isHermesEnabled() {
+                protected Boolean isHermesEnabled() {
                     return BuildConfig.IS_HERMES_ENABLED;
                 }
             };
@@ -59,8 +59,7 @@ public class MainApplication extends Application implements ReactApplication {
     public ReactHost getReactHost() {
         return DefaultReactHost.getDefaultReactHost(
                 getApplicationContext(),
-                getReactNativeHost(),
-                null
+                getReactNativeHost()
         );
     }
 
