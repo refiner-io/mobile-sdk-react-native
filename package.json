@@ -35,7 +35,7 @@
     "package.json"
   ],
   "peerDependencies": {
-    "react-native": "^0.76.6"
+    "react-native": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",
@@ -50,8 +50,6 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.28.2",
-    "@react-native-community/cli-platform-android": "^16.0.2",
-    "react-native": "^0.76.6"
+    "@babel/runtime": "^7.28.2"
   }
 }
