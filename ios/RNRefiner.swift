@@ -75,25 +75,20 @@ public class RNRefiner: RCTEventEmitter {
                 }
             }
             
-            // Try to call Refiner SDK with error handling
-            do {
-                let operation: Refiner.WriteOperation
-                if let writeOp = writeOperation, !writeOp.isEmpty {
-                    operation = Refiner.WriteOperation(rawValue: writeOp) ?? .append
-                } else {
-                    operation = .append
-                }
-                
-                try? Refiner.instance.identifyUser(
-                    userId: userId,
-                    userTraits: userTraitsMap,
-                    locale: locale,
-                    signature: signature,
-                    writeOperation: operation.rawValue
-                )
-            } catch {
-                // Handle error silently
+            let operation: Refiner.WriteOperation
+            if let writeOp = writeOperation, !writeOp.isEmpty {
+                operation = Refiner.WriteOperation(rawValue: writeOp) ?? .append
+            } else {
+                operation = .append
             }
+
+            try? Refiner.instance.identifyUser(
+                userId: userId,
+                userTraits: userTraitsMap,
+                locale: locale,
+                signature: signature,
+                writeOperation: operation.rawValue
+            )
         }
     }
     
@@ -302,141 +297,16 @@ public class RNRefiner: RCTEventEmitter {
     }
 }
 
-#if RCT_NEW_ARCH_ENABLED
-// MARK: - TurboModule Support
-extension RNRefiner: NativeRNRefinerSpec {
-    func initialize(_ projectId: String, debugMode: Bool) -> Void {
-        // Register callbacks first, synchronously
-        self.registerCallbacks()
-        
-        // Then initialize the SDK
-        DispatchQueue.main.async {
-            Refiner.instance.initialize(projectId: projectId, debugMode: debugMode)
-        }
-    }
-    
-    func setProject(_ projectId: String) -> Void {
-        Refiner.instance.setProject(with: projectId)
-    }
-    
-    func identifyUser(_ userId: String, userTraits: NSDictionary, locale: String?, signature: String?, writeOperation: String?) -> Void {
-        DispatchQueue.main.async {
-            // Convert NSDictionary to Swift Dictionary
-            var userTraitsMap: [String: Any] = [:]
-            for (key, value) in userTraits {
-                if let stringKey = key as? String {
-                    userTraitsMap[stringKey] = value
-                }
-            }
-            
-            // Check if Refiner SDK is available
-            if Refiner.instance != nil {
-                // Try to call Refiner SDK with error handling
-                do {
-                    let operation: Refiner.WriteOperation
-                    if let writeOp = writeOperation, !writeOp.isEmpty {
-                        operation = Refiner.WriteOperation(rawValue: writeOp) ?? .append
-                    } else {
-                        operation = .append
-                    }
-                    
-                    try? Refiner.instance.identifyUser(
-                        userId: userId,
-                        userTraits: userTraitsMap,
-                        locale: locale,
-                        signature: signature,
-                        writeOperation: operation.rawValue
-                    )
-                } catch {
-                    // Handle error silently
-                }
-            }
-        }
-    }
-    
-    func setUser(_ userId: String, userTraits: NSDictionary?, locale: String?, signature: String?) -> Void {
-        DispatchQueue.main.async {
-            let userTraitsMap = userTraits?.toSwiftDictionary() ?? [:]
-            try? Refiner.instance.setUser(userId: userId, userTraits: userTraitsMap, locale: locale, signature: signature)
-        }
-    }
-    
-    func resetUser() -> Void {
-        Refiner.instance.resetUser()
-    }
-    
-    func trackEvent(_ eventName: String) -> Void {
-        Refiner.instance.trackEvent(name: eventName)
-    }
-    
-    func trackScreen(_ screenName: String) -> Void {
-        Refiner.instance.trackScreen(name: screenName)
-    }
-    
-    func ping() -> Void {
-        Refiner.instance.ping()
-    }
-    
-    func showForm(_ formUuid: String, force: Bool) -> Void {
-        DispatchQueue.main.async {
-            Refiner.instance.showForm(uuid: formUuid, force: force)
-        }
-    }
-    
-    func dismissForm(_ formUuid: String) -> Void {
-        DispatchQueue.main.async {
-            Refiner.instance.dismissForm(uuid: formUuid)
-        }
-    }
-    
-    func closeForm(_ formUuid: String) -> Void {
-        DispatchQueue.main.async {
-            Refiner.instance.closeForm(uuid: formUuid)
-        }
-    }
-    
-    func addToResponse(_ contextualData: NSDictionary?) -> Void {
-        DispatchQueue.main.async {
-            let contextualDataMap = contextualData?.toSwiftDictionary() ?? [:]
-            Refiner.instance.addToResponse(data: contextualDataMap)
-        }
-    }
-    
-    func startSession() -> Void {
-        Refiner.instance.startSession()
-    }
-    
-    func addListener(_ eventName: String) -> Void {
-        // Required for RN built in Event Emitter Calls
-    }
-    
-    func removeListeners(_ count: Double) -> Void {
-        // Required for RN built in Event Emitter Calls
-    }
-    
-    // Architecture detection methods for TurboModule
-    func getArchitectureInfo(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
-        #if RCT_NEW_ARCH_ENABLED
-            resolve(true)
-        #else
-            resolve(false)
-        #endif
-    }
-    
-    func setArchitectureInfo(_ isNewArch: Bool) -> Void {
-        // Store architecture info if needed for future use
-        // Currently using compile-time detection, but this allows runtime override
-    }
-    
-    func detectArchitecture(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
-        #if RCT_NEW_ARCH_ENABLED
-            resolve(true)
-        #else
-            resolve(false)
-        #endif
-    }
-}
-#endif
+// Note: TurboModule extension is commented out for Expo compatibility
+// The React Native interop layer will automatically wrap the legacy bridge
+// implementation for New Architecture support
+//
+// #if RCT_NEW_ARCH_ENABLED
+// // MARK: - TurboModule Support
+// extension RNRefiner: NativeRNRefinerSpec {
+//     ...
+// }
+// #endif
 
 // MARK: - Extensions
 
