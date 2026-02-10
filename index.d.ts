@@ -38,7 +38,7 @@ export interface RefinerSDKInterface extends NativeModule {
    * Identify a user with traits and optional signature verification
    */
   identifyUser: (
-    userId: string,
+    userId: string | null,
     userTraits: Record<string, unknown>,
     locale: string | null,
     signature: string | null,
@@ -49,7 +49,7 @@ export interface RefinerSDKInterface extends NativeModule {
    * Set user data without signature verification
    */
   setUser: (
-    userId: string,
+    userId: string | null,
     userTraits: Record<string, unknown>,
     locale: string | null,
     signature: string | null
@@ -104,6 +104,16 @@ export interface RefinerSDKInterface extends NativeModule {
    * Start a new session
    */
   startSession: () => void;
+
+  /**
+   * Set locale for the current user (including anonymous users)
+   */
+  setLocale: (locale: string) => void;
+
+  /**
+   * Set a custom anonymous ID
+   */
+  setAnonymousId: (anonymousId: string) => void;
 
   /**
    * @deprecated Use addToResponse instead
@@ -175,14 +185,14 @@ export interface NativeRNRefinerSpec {
   initialize(projectId: string, debugMode: boolean): void;
   setProject(projectId: string): void;
   identifyUser(
-    userId: string,
+    userId: string | null,
     userTraits: Record<string, unknown>,
     locale?: string,
     signature?: string,
     writeOperation?: string
   ): void;
   setUser(
-    userId: string,
+    userId: string | null,
     userTraits: Record<string, unknown>,
     locale?: string,
     signature?: string
@@ -196,6 +206,8 @@ export interface NativeRNRefinerSpec {
   closeForm(formUuid: string): void;
   addToResponse(contextualData: Record<string, unknown>): void;
   startSession(): void;
+  setLocale(locale: string): void;
+  setAnonymousId(anonymousId: string): void;
   addListener(eventName: string): void;
   removeListeners(count: number): void;
 }

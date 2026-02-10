@@ -38,21 +38,21 @@ class RNRefinerTurboModule(
 
     @ReactMethod
     override fun identifyUser(
-        userId: String,
+        userId: String?,
         userTraits: ReadableMap,
         locale: String?,
         signature: String?,
         writeOperation: String?
     ) {
         val userTraitsMap = MapUtil.toMap(userTraits)
-        val operation = writeOperation?.let { Refiner.WriteOperation.valueOf(it) } 
+        val operation = writeOperation?.let { Refiner.WriteOperation.valueOf(it) }
             ?: Refiner.WriteOperation.APPEND
         Refiner.identifyUser(userId, userTraitsMap, locale, signature, operation)
     }
 
     @ReactMethod
     override fun setUser(
-        userId: String,
+        userId: String?,
         userTraits: ReadableMap?,
         locale: String?,
         signature: String?
@@ -109,6 +109,16 @@ class RNRefinerTurboModule(
     @ReactMethod
     override fun startSession() {
         Refiner.startSession()
+    }
+
+    @ReactMethod
+    override fun setLocale(locale: String?) {
+        locale?.let { Refiner.setLocale(it) }
+    }
+
+    @ReactMethod
+    override fun setAnonymousId(anonymousId: String?) {
+        anonymousId?.let { Refiner.setAnonymousId(it) }
     }
 
     @ReactMethod

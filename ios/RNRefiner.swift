@@ -65,7 +65,7 @@ public class RNRefiner: RCTEventEmitter {
     }
     
     @objc(identifyUser:withUserTraits:withLocale:withSignature:withWriteOperation:)
-    func identifyUser(_ userId: String, userTraits: NSDictionary, locale: String?, signature: String?, writeOperation: String?) {
+    func identifyUser(_ userId: String?, userTraits: NSDictionary, locale: String?, signature: String?, writeOperation: String?) {
         DispatchQueue.main.async {
             // Convert NSDictionary to Swift Dictionary
             var userTraitsMap: [String: Any] = [:]
@@ -74,7 +74,7 @@ public class RNRefiner: RCTEventEmitter {
                     userTraitsMap[stringKey] = value
                 }
             }
-            
+
             let operation: Refiner.WriteOperation
             if let writeOp = writeOperation, !writeOp.isEmpty {
                 operation = Refiner.WriteOperation(rawValue: writeOp) ?? .append
@@ -93,7 +93,7 @@ public class RNRefiner: RCTEventEmitter {
     }
     
     @objc(setUser:withUserTraits:withLocale:withSignature:)
-    func setUser(_ userId: String, userTraits: NSDictionary?, locale: String?, signature: String?) {
+    func setUser(_ userId: String?, userTraits: NSDictionary?, locale: String?, signature: String?) {
         DispatchQueue.main.async {
             let userTraitsMap = userTraits?.toSwiftDictionary() ?? [:]
             try? Refiner.instance.setUser(userId: userId, userTraits: userTraitsMap, locale: locale, signature: signature)
@@ -152,6 +152,16 @@ public class RNRefiner: RCTEventEmitter {
     @objc
     func startSession() {
         Refiner.instance.startSession()
+    }
+
+    @objc(setLocale:)
+    func setLocale(_ locale: String) {
+        Refiner.instance.setLocale(locale)
+    }
+
+    @objc(setAnonymousId:)
+    func setAnonymousId(_ anonymousId: String) {
+        Refiner.instance.setAnonymousId(anonymousId)
     }
     
     // MARK: - Architecture Detection Methods

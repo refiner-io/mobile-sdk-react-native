@@ -13,14 +13,14 @@
 // Core SDK methods
 RCT_EXTERN_METHOD(initialize:(NSString *)projectId withDebugMode:(BOOL)debugMode)
 RCT_EXTERN_METHOD(setProject:(NSString *)projectId)
-RCT_EXTERN_METHOD(identifyUser:(NSString *)userId 
-                  withUserTraits:(NSDictionary *)userTraits 
-                  withLocale:(NSString *)locale 
-                  withSignature:(NSString *)signature 
-                  withWriteOperation:(NSString *)writeOperation)
-RCT_EXTERN_METHOD(setUser:(NSString *)userId 
-                  withUserTraits:(NSDictionary * _Nullable)userTraits 
-                  withLocale:(NSString * _Nullable)locale 
+RCT_EXTERN_METHOD(identifyUser:(NSString * _Nullable)userId
+                  withUserTraits:(NSDictionary *)userTraits
+                  withLocale:(NSString * _Nullable)locale
+                  withSignature:(NSString * _Nullable)signature
+                  withWriteOperation:(NSString * _Nullable)writeOperation)
+RCT_EXTERN_METHOD(setUser:(NSString * _Nullable)userId
+                  withUserTraits:(NSDictionary * _Nullable)userTraits
+                  withLocale:(NSString * _Nullable)locale
                   withSignature:(NSString * _Nullable)signature)
 RCT_EXTERN_METHOD(resetUser)
 RCT_EXTERN_METHOD(trackEvent:(NSString *)eventName)
@@ -31,6 +31,8 @@ RCT_EXTERN_METHOD(dismissForm:(NSString *)formUuid)
 RCT_EXTERN_METHOD(closeForm:(NSString *)formUuid)
 RCT_EXTERN_METHOD(addToResponse:(NSDictionary * _Nullable)contextualData)
 RCT_EXTERN_METHOD(startSession)
+RCT_EXTERN_METHOD(setLocale:(NSString *)locale)
+RCT_EXTERN_METHOD(setAnonymousId:(NSString *)anonymousId)
 
 // Architecture detection methods
 RCT_EXTERN_METHOD(getArchitectureInfo:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)

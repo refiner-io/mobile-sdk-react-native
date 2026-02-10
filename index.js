@@ -106,6 +106,8 @@ const createStubModule = () => {
     closeForm: stubMethod("closeForm"),
     addToResponse: stubMethod("addToResponse"),
     startSession: stubMethod("startSession"),
+    setLocale: stubMethod("setLocale"),
+    setAnonymousId: stubMethod("setAnonymousId"),
     addListener: stubMethod("addListener"),
     removeListeners: stubMethod("removeListeners"),
     attachToResponse: stubMethod("attachToResponse"),
@@ -206,6 +208,8 @@ const createRNRefinerWrapper = (nativeModule) => {
       }
     },
     startSession: () => nativeModule.startSession(),
+    setLocale: (locale) => nativeModule.setLocale(locale),
+    setAnonymousId: (anonymousId) => nativeModule.setAnonymousId(anonymousId),
 
     // Event emitter methods (required for both architectures)
     addListener: (eventName) => nativeModule.addListener(eventName),
