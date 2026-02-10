@@ -16,7 +16,7 @@ export interface Spec extends TurboModule {
    * Identify a user with traits and optional signature verification
    */
   identifyUser(
-    userId: string,
+    userId: string | null,
     userTraits: Object, // made required
     locale?: string,
     signature?: string,
@@ -27,7 +27,7 @@ export interface Spec extends TurboModule {
    * Set user data without signature verification
    */
   setUser(
-    userId: string,
+    userId: string | null,
     userTraits?: Object | null, // made optional and nullable
     locale?: string,
     signature?: string
@@ -77,6 +77,16 @@ export interface Spec extends TurboModule {
    * Start a new session
    */
   startSession(): void;
+
+  /**
+   * Set locale for the current user (including anonymous users)
+   */
+  setLocale(locale: string): void;
+
+  /**
+   * Set a custom anonymous ID
+   */
+  setAnonymousId(anonymousId: string): void;
 
   /**
    * Required for RN built in Event Emitter Calls

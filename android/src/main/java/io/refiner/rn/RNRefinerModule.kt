@@ -62,12 +62,9 @@ class RNRefinerModule(reactContext: ReactApplicationContext) : ReactContextBaseJ
         writeOperation: String?
     ) {
         val userTraitsMap = userTraits?.let { MapUtil.toMap(it) }
-        
-        userId?.let { id ->
-            val operation = writeOperation?.let { Refiner.WriteOperation.valueOf(it) } 
-                ?: Refiner.WriteOperation.APPEND
-            Refiner.identifyUser(id, userTraitsMap, locale, signature, operation)
-        }
+        val operation = writeOperation?.let { Refiner.WriteOperation.valueOf(it) }
+            ?: Refiner.WriteOperation.APPEND
+        Refiner.identifyUser(userId, userTraitsMap, locale, signature, operation)
     }
 
     @ReactMethod
@@ -78,10 +75,7 @@ class RNRefinerModule(reactContext: ReactApplicationContext) : ReactContextBaseJ
         signature: String?
     ) {
         val userTraitsMap = userTraits?.let { MapUtil.toMap(it) }
-        
-        userId?.let { id ->
-            Refiner.setUser(id, userTraitsMap, locale, signature)
-        }
+        Refiner.setUser(userId, userTraitsMap, locale, signature)
     }
 
     @ReactMethod
@@ -139,6 +133,16 @@ class RNRefinerModule(reactContext: ReactApplicationContext) : ReactContextBaseJ
     @ReactMethod
     fun startSession() {
         Refiner.startSession()
+    }
+
+    @ReactMethod
+    fun setLocale(locale: String?) {
+        locale?.let { Refiner.setLocale(it) }
+    }
+
+    @ReactMethod
+    fun setAnonymousId(anonymousId: String?) {
+        anonymousId?.let { Refiner.setAnonymousId(it) }
     }
 
     @Deprecated("Use addToResponse instead", ReplaceWith("addToResponse(contextualData)"))
