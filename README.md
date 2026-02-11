@@ -88,7 +88,7 @@ RNRefiner.initialize("PROJECT_ID", false);
 
 Call `Identify User` to create or update user traits in Refiner. 
 
-The first parameter is the userId of your logged-in user. This parameter is optional — when set to `null`, the SDK operates in anonymous mode.
+The first parameter is the unique identifier of your logged-in user. 
 
 The second parameter is an object of user traits. You can provide an empty object if you don't want to send any user traits to your Refiner account.
 
@@ -97,11 +97,11 @@ var userTraits = { email: "hello@hello.com", a_number: 123, a_date: "2022-16-04 
 RNRefiner.identifyUser("USER_ID", userTraits, null, null, null);
 ```
 
-#### Advanced parameters
+#### Optional parameters
 
-The third parameter is for setting the `locale` of a user and is optional. The expected format is a two letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) language code. When provided, the locale code is used for launching surveys for specific languages, as well as launching translated sureys. You can set the value to `null` if you are not using any language specific features.
+The third parameter is for setting the `locale` of a user. The expected format is a two letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) language code. When provided, the locale code is used for launching surveys for specific languages, as well as launching translated sureys. You can set the value to `null` if you are not using any language specific features.
 
-The fourth parameter is an optional [Identity Verification](https://refiner.io/docs/kb/settings/identity-verification/) signature. We recommend to use a Identify Verification signature for increased security in a production environment. For development purposes, you can set this value to `null`.
+The fourth parameter is an [Identity Verification](https://refiner.io/docs/kb/settings/identity-verification/) signature. We recommend to use a Identify Verification signature for increased security in a production environment. For development purposes, you can set this value to `null`.
 
 The fifth parameter allows you to change the data storage mode for userTraits from the default "append" mode to "replace". By default, traits are appended to the existing user record—this means previously stored data will persist even if it's not included in the current payload. When set to "replace", only the traits provided in the current payload are kept. Any previously stored traits that are not included will be removed from the user object in Refiner.
 
@@ -125,7 +125,7 @@ RNRefiner.setUser("USER_ID", userTraits, "LOCALE", "SIGNATURE");
 
 ### Set Anonymous Id
 
-The `Set Anonymous Id` method allows you to track anonymous users without requiring a login or user identification. This is useful for tracking users who haven't signed up yet or for apps that don't require authentication.
+The `Set Anonymous Id` method allows you to set a anonymous user ID for users that are not logged-in. This is useful for tracking users who haven't signed up yet or for apps that don't require authentication.
 
 When not called, Refiner will automatically generate and maintain a unique anonymous identifier for the user. This identifier persists across app sessions.
 
@@ -135,7 +135,7 @@ RNRefiner.setAnonymousId("ANONYMOUS_ID");
 
 ### Set Locale
 
-The `Set Locale` method allows you to set or update the locale for anonymous users after they have been identified. This is useful when you want to change the language preference for an anonymous user without re-identifying them.
+The `Set Locale` method allows you to set or update the locale for a user. 
 
 The expected format is a two letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) language code.
 
