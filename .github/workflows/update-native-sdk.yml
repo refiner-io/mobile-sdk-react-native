@@ -1,0 +1,68 @@
+name: Update Native SDK Dependency
+
+on:
+  repository_dispatch:
+    types: [android-sdk-release, ios-sdk-release]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          persist-credentials: false
+
+      - name: Extract platform and version
+        id: info
+        run: |
+          VERSION="${{ github.event.client_payload.version }}"
+          EVENT_TYPE="${{ github.event.action }}"
+          if [ "$EVENT_TYPE" = "android-sdk-release" ]; then
+            PLATFORM="android"
+          else
+            PLATFORM="ios"
+          fi
+          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "PLATFORM=$PLATFORM" >> "$GITHUB_OUTPUT"
+
+      - name: Update Android dependency
+        if: steps.info.outputs.PLATFORM == 'android'
+        run: |
+          sed -i "s/implementation 'io.refiner:refiner:[^']*'/implementation 'io.refiner:refiner:${{ steps.info.outputs.VERSION }}'/" android/build.gradle
+
+      - name: Update iOS dependency
+        if: steps.info.outputs.PLATFORM == 'ios'
+        run: |
+          sed -i "s/s\.dependency \"RefinerSDK\", \"~> [^\"]*\"/s.dependency \"RefinerSDK\", \"~> ${{ steps.info.outputs.VERSION }}\"/" refiner-react-native.podspec
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.SDK_RELEASE_PAT }}
+          base: develop
+          branch: chore/update-${{ steps.info.outputs.PLATFORM }}-sdk-${{ steps.info.outputs.VERSION }}
+          commit-message: "chore: update ${{ steps.info.outputs.PLATFORM }} native SDK to ${{ steps.info.outputs.VERSION }}"
+          title: "chore: update ${{ steps.info.outputs.PLATFORM }} native SDK to ${{ steps.info.outputs.VERSION }}"
+          body: |
+            # What it does
+
+            Updates the ${{ steps.info.outputs.PLATFORM }} native SDK dependency to version `${{ steps.info.outputs.VERSION }}`.
+
+            # How to test it
+
+            1. Build and run the example app
+            2. Verify the SDK initializes correctly with the new native version
+
+            # Acceptance criteria
+
+            * Native SDK dependency points to `${{ steps.info.outputs.VERSION }}`
+            * No breaking changes in bridge/wrapper code (review if new native APIs require updates)
+
+            # Link to ticket
+
+            Automated — triggered by a new release in `mobile-sdk-internal`.
