@@ -24,6 +24,8 @@
          locale:(NSString * _Nullable)locale
       signature:(NSString * _Nullable)signature;
 - (void)resetUser;
+- (void)disableClient;
+- (void)enableClient;
 - (void)trackEvent:(NSString *)eventName;
 - (void)trackScreen:(NSString *)screenName;
 - (void)ping;

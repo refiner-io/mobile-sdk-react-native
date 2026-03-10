@@ -39,6 +39,16 @@ export interface Spec extends TurboModule {
   resetUser(): void;
 
   /**
+   * Disable the SDK client - stops all survey checks and API communication
+   */
+  disableClient(): void;
+
+  /**
+   * Enable the SDK client - resumes survey checks and API communication
+   */
+  enableClient(): void;
+
+  /**
    * Track a custom event
    */
   trackEvent(eventName: string): void;

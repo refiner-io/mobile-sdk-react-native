@@ -67,6 +67,16 @@ class RNRefinerTurboModule(
     }
 
     @ReactMethod
+    override fun disableClient() {
+        Refiner.disableClient()
+    }
+
+    @ReactMethod
+    override fun enableClient() {
+        Refiner.enableClient()
+    }
+
+    @ReactMethod
     override fun trackEvent(eventName: String) {
         Refiner.trackEvent(eventName)
     }
