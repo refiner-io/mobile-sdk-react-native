@@ -5,7 +5,7 @@
   "homepage": "https://github.com/refiner-io/mobile-sdk-react-native",
   "repository": {
     "type": "git",
-    "url": "git://github.com/refiner-io/mobile-sdk-react-native.git"
+    "url": "git+https://github.com/refiner-io/mobile-sdk-react-native.git"
   },
   "keywords": [
     "refiner.io",
