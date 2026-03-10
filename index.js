@@ -98,6 +98,8 @@ const createStubModule = () => {
     identifyUser: stubMethod("identifyUser"),
     setUser: stubMethod("setUser"),
     resetUser: stubMethod("resetUser"),
+    disableClient: stubMethod("disableClient"),
+    enableClient: stubMethod("enableClient"),
     trackEvent: stubMethod("trackEvent"),
     trackScreen: stubMethod("trackScreen"),
     ping: stubMethod("ping"),
@@ -190,6 +192,8 @@ const createRNRefinerWrapper = (nativeModule) => {
       }
     },
     resetUser: () => nativeModule.resetUser(),
+    disableClient: () => nativeModule.disableClient(),
+    enableClient: () => nativeModule.enableClient(),
     trackEvent: (eventName) => nativeModule.trackEvent(eventName),
     trackScreen: (screenName) => nativeModule.trackScreen(screenName),
     ping: () => nativeModule.ping(),

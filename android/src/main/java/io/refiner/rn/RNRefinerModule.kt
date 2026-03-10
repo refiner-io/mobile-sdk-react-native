@@ -84,6 +84,16 @@ class RNRefinerModule(reactContext: ReactApplicationContext) : ReactContextBaseJ
     }
 
     @ReactMethod
+    fun disableClient() {
+        Refiner.disableClient()
+    }
+
+    @ReactMethod
+    fun enableClient() {
+        Refiner.enableClient()
+    }
+
+    @ReactMethod
     fun trackEvent(eventName: String?) {
         eventName?.let { name ->
             Refiner.trackEvent(name)

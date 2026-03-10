@@ -1558,7 +1558,7 @@ PODS:
     - React-logger
     - React-perflogger
     - React-utils (= 0.76.9)
-  - refiner-react-native (1.7.5):
+  - refiner-react-native (1.8.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1578,9 +1578,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RefinerSDK (~> 1.5.10)
+    - RefinerSDK (~> 1.7.1)
     - Yoga
-  - RefinerSDK (1.5.10)
+  - RefinerSDK (1.7.1)
   - SocketRocket (0.7.1)
   - Yoga (0.0.0)
 
@@ -1855,8 +1855,8 @@ SPEC CHECKSUMS:
   React-utils: ed818f19ab445000d6b5c4efa9d462449326cc9f
   ReactCodegen: f853a20cc9125c5521c8766b4b49375fec20648b
   ReactCommon: 300d8d9c5cb1a6cd79a67cf5d8f91e4d477195f9
-  refiner-react-native: e2e15cae75fc003da5426df34c0227ee4e3d6a03
-  RefinerSDK: cbae1daf927d3c9fddb22f12a0fcf84548c8c84c
+  refiner-react-native: 0995ef6944bfc7b5ae69e4229353a0c15b3f895c
+  RefinerSDK: efc3a318824fc21344b9c5aeb0d4bc365a3b1164
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: feb4910aba9742cfedc059e2b2902e22ffe9954a
 
