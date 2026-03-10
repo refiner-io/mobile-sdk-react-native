@@ -76,6 +76,6 @@ Pod::Spec.new do |s|
   end
 
   # RefinerSDK dependency
-  s.dependency "RefinerSDK", "~> 1.6.1"
+  s.dependency "RefinerSDK", "~> 1.7.1"
 end
 
