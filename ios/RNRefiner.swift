@@ -104,6 +104,16 @@ public class RNRefiner: RCTEventEmitter {
     func resetUser() {
         Refiner.instance.resetUser()
     }
+
+    @objc
+    func disableClient() {
+        Refiner.instance.disableClient()
+    }
+
+    @objc
+    func enableClient() {
+        Refiner.instance.enableClient()
+    }
     
     @objc(trackEvent:)
     func trackEvent(_ eventName: String) {

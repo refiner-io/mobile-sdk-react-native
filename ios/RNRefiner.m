@@ -23,6 +23,8 @@ RCT_EXTERN_METHOD(setUser:(NSString * _Nullable)userId
                   withLocale:(NSString * _Nullable)locale
                   withSignature:(NSString * _Nullable)signature)
 RCT_EXTERN_METHOD(resetUser)
+RCT_EXTERN_METHOD(disableClient)
+RCT_EXTERN_METHOD(enableClient)
 RCT_EXTERN_METHOD(trackEvent:(NSString *)eventName)
 RCT_EXTERN_METHOD(trackScreen:(NSString *)screenName)
 RCT_EXTERN_METHOD(ping)

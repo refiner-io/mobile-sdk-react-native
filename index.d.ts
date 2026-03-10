@@ -66,6 +66,16 @@ export interface RefinerSDKInterface extends NativeModule {
   resetUser: () => void;
 
   /**
+   * Disable the SDK client - stops all survey checks and API communication
+   */
+  disableClient: () => void;
+
+  /**
+   * Enable the SDK client - resumes survey checks and API communication
+   */
+  enableClient: () => void;
+
+  /**
    * Set the project ID
    */
   setProject: (projectId: string | null) => void;
@@ -198,6 +208,8 @@ export interface NativeRNRefinerSpec {
     signature?: string
   ): void;
   resetUser(): void;
+  disableClient(): void;
+  enableClient(): void;
   trackEvent(eventName: string): void;
   trackScreen(screenName: string): void;
   ping(): void;
