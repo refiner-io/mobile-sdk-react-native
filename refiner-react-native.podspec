@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/refiner-io/mobile-sdk-react-native"
   s.license      = "MIT"
   s.author       = { package["author"]["name"] => package["author"]["email"] }
-  s.platforms    = { :ios => "11.0" }
+  s.platforms    = { :ios => "15.1" }
   s.source       = { :git => "https://github.com/refiner-io/mobile-sdk-react-native.git", :tag => "#{s.version}" }
   
   # Build as static library to support bridging headers
