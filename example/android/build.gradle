@@ -5,8 +5,8 @@ buildscript {
         buildToolsVersion = "35.0.0"
         minSdkVersion = 24
         compileSdkVersion = 35
-        targetSdkVersion = 34
-        kotlinVersion = "2.0.21"
+        targetSdkVersion = 35
+        kotlinVersion = "2.1.20"
 
         ndkVersion = "27.2.12479018"
     }
@@ -18,6 +18,17 @@ buildscript {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+    }
+}
+
+allprojects {
+    configurations.all {
+        // RN 0.79 ships Kotlin 2.0.21 but the native SDK requires 2.1.20
+        resolutionStrategy {
+            force "org.jetbrains.kotlin:kotlin-stdlib:${rootProject.ext.kotlinVersion}"
+            force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.ext.kotlinVersion}"
+            force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.ext.kotlinVersion}"
+        }
     }
 }
 
