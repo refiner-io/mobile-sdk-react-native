@@ -210,6 +210,24 @@ Call `Reset User` to reset the user identifier previously set through `Identify 
 RNRefiner.resetUser();
 ```
 
+### Disable & enable client
+
+You can instruct the SDK to stop querying our servers and prevent any surveys from being displayed.
+
+When ‘disable client’ is invoked, the SDK immediately stops any communication with the backend API and currently open surveys will be closed.
+
+This allows you to programmatically suspend survey activity – for example, in critical areas of your app, during maintenance windows, or based on user consent preferences.
+
+```javascript
+RNRefiner.disableClient();
+```
+
+The client remains disabled on the current device until it is explicitly re-enabled using the following command:
+
+```javascript
+RNRefiner.enableClient();
+```
+
 ### Set Project
 
 Change the environment UUID during runtime, after the SDK has been initialised.
