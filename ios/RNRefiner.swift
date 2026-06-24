@@ -19,11 +19,9 @@ public class RNRefiner: RCTEventEmitter {
     private let kRefinerProgress = "progress"
     private let kRefinerFormData = "formData"
     private let kRefinerMessage = "message"
-    
-    public func methodQueue() -> DispatchQueue! {
-        return DispatchQueue.main
-    }
-    
+
+    private var didInitialize = false
+
     public override func supportedEvents() -> [String]! {
         return [
             kRefinerOnBeforeShow,
@@ -50,12 +48,19 @@ public class RNRefiner: RCTEventEmitter {
     
     @objc(initialize:withDebugMode:)
     func initialize(_ projectId: String, debugMode: Bool) {
-        // Register callbacks first, synchronously
-        self.registerCallbacks()
-        
-        // Then initialize the SDK
-        DispatchQueue.main.async {
+        // The native SDK is backed by a Kotlin/Native runtime whose async model and
+        // network bring-up are anchored to the main run loop. Bridge methods are
+        // dispatched on a background method queue, so the SDK must be brought up on the
+        // main thread, and `Refiner.instance.initialize` must run *before* anything else
+        // touches `Refiner.instance` (e.g. the callback closures) — otherwise the model
+        // is accessed before initialization completes and no network sync ever fires.
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            guard !self.didInitialize else { return }
+            self.didInitialize = true
+
             Refiner.instance.initialize(projectId: projectId, debugMode: debugMode)
+            self.registerCallbacks()
         }
     }
     
