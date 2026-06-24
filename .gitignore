@@ -44,4 +44,6 @@ local.properties
 buck-out/
 \.buckd/
 *.keystore
-      
+
+# Local working notes (not part of the project)
+tasks/
