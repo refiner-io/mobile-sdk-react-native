@@ -25,14 +25,21 @@
   "types": "index.d.ts",
   "files": [
     "src/",
-    "android/",
+    "android/src/",
+    "android/build.gradle",
+    "android/gradle.properties",
     "ios/",
     "index.js",
     "index.d.ts",
-    "react-native.config.js",
     "refiner-react-native.podspec",
     "README.md",
-    "package.json"
+    "package.json",
+    "!android/**/build/",
+    "!ios/**/xcuserdata/",
+    "!**/.gradle/",
+    "!**/.idea/",
+    "!**/local.properties",
+    "!**/*.iml"
   ],
   "peerDependencies": {
     "react-native": ">=0.78.0"
