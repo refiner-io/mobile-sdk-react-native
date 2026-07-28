@@ -86,7 +86,7 @@ function Section({children, title}: SectionProps): React.JSX.Element {
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
-  const [isModuleLoaded, setIsModuleLoaded] = useState(false);
+  const [_isModuleLoaded, setIsModuleLoaded] = useState(false);
 
   useEffect(() => {
     // Check module availability
