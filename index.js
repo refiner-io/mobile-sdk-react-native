@@ -5,83 +5,33 @@ let RNRefinerTurboModule;
 let turboModuleAvailable = false;
 
 try {
-  const { TurboModuleRegistry, NativeModules } = require("react-native");
+  const { TurboModuleRegistry } = require("react-native");
 
-  console.log("Refiner: Available NativeModules:", Object.keys(NativeModules));
-  console.log("Refiner: TurboModuleRegistry available:", !!TurboModuleRegistry);
-
-  // First try to get the TurboModule
-  try {
-    RNRefinerTurboModule = TurboModuleRegistry.getEnforcing("RNRefiner");
-    turboModuleAvailable = true;
-    console.log(
-      "Refiner: TurboModule loaded successfully via TurboModuleRegistry"
-    );
-  } catch (turboError) {
-    console.log(
-      "Refiner: TurboModule not available via TurboModuleRegistry:",
-      turboError.message
-    );
-
-    // If TurboModuleRegistry fails, try getting it from NativeModules
-    if (NativeModules.RNRefiner) {
-      RNRefinerTurboModule = NativeModules.RNRefiner;
-      turboModuleAvailable = true;
-      console.log(
-        "Refiner: Module loaded successfully via NativeModules.RNRefiner"
-      );
-      console.log(
-        "Refiner: This is likely the legacy module, not the TurboModule"
-      );
-    } else {
-      console.log("Refiner: Module not found in NativeModules either");
-    }
-  }
-
-  if (RNRefinerTurboModule) {
-    console.log("Refiner: Module methods:", Object.keys(RNRefinerTurboModule));
-  }
+  // Resolve the TurboModule only. The legacy module is resolved separately
+  // below so the two are never conflated: treating a legacy module as a
+  // TurboModule would select the wrong null-handling for its arguments.
+  RNRefinerTurboModule = TurboModuleRegistry.get("RNRefiner");
+  turboModuleAvailable = !!RNRefinerTurboModule;
 } catch (e) {
-  console.log("Refiner: Error loading module:", e.message);
-  // Module not available, will fall back to legacy bridge
+  // TurboModule not registered; the legacy module is used instead.
 }
 
 // Determine which module to use and set architecture flag
 let RNRefinerModule;
 let isNewArchitecture = false;
 
-// In New Architecture with bridgeless mode, prioritize legacy module since TurboModules
-// from local dependencies may not be properly autolinked
-if (NativeModules.RNRefiner) {
-  RNRefinerModule = NativeModules.RNRefiner;
-  isNewArchitecture = false;
-  console.log("Refiner: Using legacy module from NativeModules");
-} else if (turboModuleAvailable && RNRefinerTurboModule) {
+// Prefer the TurboModule when it is registered. Fall back to NativeModules for
+// setups where the TurboModule is not registered (and for the legacy architecture),
+// which React Native still serves through its bridge interop layer.
+if (turboModuleAvailable && RNRefinerTurboModule) {
   RNRefinerModule = RNRefinerTurboModule;
   isNewArchitecture = true;
-  console.log("Refiner: Using TurboModule (New Architecture)");
+} else if (NativeModules.RNRefiner) {
+  RNRefinerModule = NativeModules.RNRefiner;
+  isNewArchitecture = false;
 } else {
-  // If neither TurboModule nor legacy module is available, try to access it through TurboModuleRegistry
-  console.log(
-    "Refiner: Neither TurboModule nor legacy module found, attempting fallback"
-  );
-  try {
-    const { TurboModuleRegistry } = require("react-native");
-    // Try without getEnforcing to avoid exceptions
-    RNRefinerModule = TurboModuleRegistry.get("RNRefiner");
-    if (RNRefinerModule) {
-      isNewArchitecture = true;
-      console.log("Refiner: Found module via TurboModuleRegistry.get()");
-    } else {
-      console.log(
-        "Refiner: Module not found via TurboModuleRegistry.get() either"
-      );
-      RNRefinerModule = null;
-    }
-  } catch (e) {
-    console.log("Refiner: Error accessing TurboModuleRegistry:", e.message);
-    RNRefinerModule = null;
-  }
+  // Neither is registered: the wrapper below falls back to a no-op stub.
+  RNRefinerModule = null;
 }
 
 // Create a stub module for when native module is not available
