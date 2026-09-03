@@ -1,6 +1,6 @@
 {
   "name": "refiner-react-native",
-  "version": "1.9.2",
+  "version": "1.9.3",
   "description": "Official React Native wrapper for the Refiner Mobile SDK",
   "homepage": "https://github.com/refiner-io/mobile-sdk-react-native",
   "repository": {
@@ -25,14 +25,21 @@
   "types": "index.d.ts",
   "files": [
     "src/",
-    "android/",
+    "android/src/",
+    "android/build.gradle",
+    "android/gradle.properties",
     "ios/",
     "index.js",
     "index.d.ts",
-    "react-native.config.js",
     "refiner-react-native.podspec",
     "README.md",
-    "package.json"
+    "package.json",
+    "!android/**/build/",
+    "!ios/**/xcuserdata/",
+    "!**/.gradle/",
+    "!**/.idea/",
+    "!**/local.properties",
+    "!**/*.iml"
   ],
   "peerDependencies": {
     "react-native": ">=0.78.0"
@@ -50,5 +57,13 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.28.2"
+  },
+  "overrides": {
+    "shell-quote": "^1.9.0",
+    "js-yaml@^3.0.0": "^3.15.0",
+    "js-yaml@^4.0.0": "^4.3.0",
+    "brace-expansion@^1.0.0": "^1.1.16",
+    "brace-expansion@^2.0.0": "^2.1.2",
+    "fast-xml-parser": "^5.7.0"
   }
 }
