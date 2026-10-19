@@ -19,9 +19,14 @@ jobs:
 
       - name: Extract platform and version
         id: info
+        env:
+          VERSION: ${{ github.event.client_payload.version }}
+          EVENT_TYPE: ${{ github.event.action }}
         run: |
-          VERSION="${{ github.event.client_payload.version }}"
-          EVENT_TYPE="${{ github.event.action }}"
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid version in dispatch payload: $VERSION"
+            exit 1
+          fi
           if [ "$EVENT_TYPE" = "android-sdk-release" ]; then
             PLATFORM="android"
           else
