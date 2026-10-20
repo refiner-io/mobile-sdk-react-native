@@ -18,9 +18,10 @@ jobs:
 
       - name: Extract version from PR title
         id: version
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
-          VERSION="${{ github.event.pull_request.title }}"
-          VERSION="${VERSION#Release }"
+          VERSION="${PR_TITLE#Release }"
           if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "::error::Invalid version in PR title: $VERSION"
             exit 1
