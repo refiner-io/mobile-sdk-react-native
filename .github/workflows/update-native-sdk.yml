@@ -44,6 +44,8 @@ jobs:
         if: steps.info.outputs.PLATFORM == 'ios'
         run: |
           sed -i "s/s\.dependency \"RefinerSDK\", \"~> [^\"]*\"/s.dependency \"RefinerSDK\", \"~> ${{ steps.info.outputs.VERSION }}\"/" refiner-react-native.podspec
+          # Keep the Swift Package Manager range in step with the podspec.
+          sed -i "s#\.package(url: \"https://github.com/refiner-io/mobile-sdk-ios.git\", from: \"[^\"]*\")#.package(url: \"https://github.com/refiner-io/mobile-sdk-ios.git\", from: \"${{ steps.info.outputs.VERSION }}\")#" Package.swift
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
