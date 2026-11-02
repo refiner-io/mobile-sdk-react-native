@@ -23,7 +23,11 @@
   "private": false,
   "main": "index.js",
   "types": "index.d.ts",
+  "swiftpmConfig": {
+    "name": "RNRefiner"
+  },
   "files": [
+    "Package.swift",
     "src/",
     "android/src/",
     "android/build.gradle",
