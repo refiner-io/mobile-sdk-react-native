@@ -37,9 +37,12 @@ jobs:
       - name: Publish to npm
         run: npm publish --access public --provenance
 
-      - name: Create GitHub Release
+      # Public release notes are reviewed and published by hand: create a DRAFT with a short
+      # body (never an auto-generated commit list).
+      - name: Create draft GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.VERSION }}
           name: ${{ steps.version.outputs.VERSION }}
-          generate_release_notes: true
+          body: "refiner-react-native ${{ steps.version.outputs.VERSION }}"
+          draft: true
