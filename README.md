@@ -20,7 +20,31 @@ Refiner helps you to understand who your users really are, what they need and ho
 
 ### iOS
 
-- Run command `pod install` in your ios directory
+#### CocoaPods (default)
+
+The native `RefinerSDK` pod is no longer published to the CocoaPods trunk (trunk stops accepting
+new versions in December 2026), so point CocoaPods at the public GitHub repository. Add this line to
+your `ios/Podfile` inside your app target, using the `RefinerSDK` version this package depends on
+(see `refiner-react-native.podspec`):
+
+```ruby
+pod 'RefinerSDK', :git => 'https://github.com/refiner-io/mobile-sdk-ios.git', :tag => '2.0.0'
+```
+
+Then run `pod install` in your `ios` directory.
+
+#### Swift Package Manager (experimental)
+
+This package ships a `Package.swift` for React Native's experimental Swift Package Manager
+integration, which requires **React Native 0.88 or later** and is opt-in. CocoaPods remains the
+default and supported path (minimum React Native 0.78).
+
+Install or upgrade `refiner-react-native` first, then follow
+[React Native's SwiftPM setup instructions](https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/spm/__docs__/spm-scripts.md)
+to configure your app (`cd ios && npx react-native spm`). No scaffolding is needed; the manifest is
+included and the `RefinerSDK` dependency is resolved from `https://github.com/refiner-io/mobile-sdk-ios`
+automatically. The podspec is still required for React Native's dependency discovery, including when
+the app uses SwiftPM.
 
 
 ## React Native Architecture
