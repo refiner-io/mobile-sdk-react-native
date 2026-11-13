@@ -25,6 +25,8 @@ const RNRefiner = {
   setUser: noop,
   setAnonymousId: noop,
   setLocale: noop,
+  setCountry: noop,
+  setColorScheme: noop,
   trackEvent: noop,
   trackScreen: noop,
   showForm: noop,

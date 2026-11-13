@@ -1677,9 +1677,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RefinerSDK (~> 2.0.0)
+    - RefinerSDK (~> 2.1.0)
     - Yoga
-  - RefinerSDK (2.0.0)
+  - RefinerSDK (2.1.0)
   - SocketRocket (0.7.1)
   - Yoga (0.0.0)
 
@@ -1756,7 +1756,7 @@ DEPENDENCIES:
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - refiner-react-native (from `../node_modules/refiner-react-native`)
-  - RefinerSDK (from `https://github.com/refiner-io/mobile-sdk-ios.git`, tag `2.0.0`)
+  - RefinerSDK (from `https://github.com/refiner-io/mobile-sdk-ios.git`, tag `2.1.0`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1907,14 +1907,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/refiner-react-native"
   RefinerSDK:
     :git: https://github.com/refiner-io/mobile-sdk-ios.git
-    :tag: 2.0.0
+    :tag: 2.1.0
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
   RefinerSDK:
     :git: https://github.com/refiner-io/mobile-sdk-ios.git
-    :tag: 2.0.0
+    :tag: 2.1.0
 
 SPEC CHECKSUMS:
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
@@ -1986,11 +1986,11 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: b203bace11326361b7f0513b3f5854cd340aa929
   ReactCodegen: 6a29ad4365aeeceecb951cfd6546a99ce617cc50
   ReactCommon: 4e460daed3ccb6af9e3de3176920362d8b888a17
-  refiner-react-native: b60676f224618d1aabd4f6a76c611af92c5a70c1
-  RefinerSDK: f1c0171114b02be780bd779c5bc0296ba46c11a3
+  refiner-react-native: 3edfaf7479ec23a59a33e0cad82e49596f333c58
+  RefinerSDK: 8fcc555b13a163e54b94695fdce1910ea42dd87b
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 9663a18d096f7f7e17a535cf00849db756709955
 
-PODFILE CHECKSUM: 82e4e3c2c9c178e4a0a008d54b5412bc8c28e802
+PODFILE CHECKSUM: ee9ed50abf4c725fc97a8a0620de254090217829
 
 COCOAPODS: 1.16.2

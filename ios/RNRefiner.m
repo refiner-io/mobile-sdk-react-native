@@ -34,6 +34,8 @@ RCT_EXTERN_METHOD(closeForm:(NSString *)formUuid)
 RCT_EXTERN_METHOD(addToResponse:(NSDictionary * _Nullable)contextualData)
 RCT_EXTERN_METHOD(startSession)
 RCT_EXTERN_METHOD(setLocale:(NSString *)locale)
+RCT_EXTERN_METHOD(setCountry:(NSString *)country)
+RCT_EXTERN_METHOD(setColorScheme:(NSString *)colorScheme)
 RCT_EXTERN_METHOD(setAnonymousId:(NSString *)anonymousId)
 
 // Architecture detection methods

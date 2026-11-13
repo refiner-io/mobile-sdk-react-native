@@ -167,6 +167,22 @@ The expected format is a two letter [ISO 639-1](https://en.wikipedia.org/wiki/Li
 RNRefiner.setLocale("en");
 ```
 
+### Set Country
+
+The `Set Country` method sets the country for a user. It is sent together with the locale.
+
+```javascript
+RNRefiner.setCountry("US");
+```
+
+### Set Color Scheme
+
+Surveys follow the device's light/dark appearance by default (`"auto"`). Use `Set Color Scheme` to force a scheme, for example when your app has its own theme switch:
+
+```javascript
+RNRefiner.setColorScheme("dark"); // "auto" | "light" | "dark"
+```
+
 ### Track Event
 
 `Track Event` lets you track user events. Tracked events can be used to create user segments and target audiences in Refiner.
