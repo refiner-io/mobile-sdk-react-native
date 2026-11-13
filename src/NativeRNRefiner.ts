@@ -94,6 +94,16 @@ export interface Spec extends TurboModule {
   setLocale(locale: string): void;
 
   /**
+   * Set the country for the current user (including anonymous users)
+   */
+  setCountry(country: string): void;
+
+  /**
+   * Set the survey color scheme: 'auto' | 'light' | 'dark'
+   */
+  setColorScheme(colorScheme: string): void;
+
+  /**
    * Set a custom anonymous ID
    */
   setAnonymousId(anonymousId: string): void;

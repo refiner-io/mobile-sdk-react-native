@@ -59,6 +59,8 @@ const createStubModule = () => {
     addToResponse: stubMethod("addToResponse"),
     startSession: stubMethod("startSession"),
     setLocale: stubMethod("setLocale"),
+    setCountry: stubMethod("setCountry"),
+    setColorScheme: stubMethod("setColorScheme"),
     setAnonymousId: stubMethod("setAnonymousId"),
     addListener: stubMethod("addListener"),
     removeListeners: stubMethod("removeListeners"),
@@ -163,6 +165,8 @@ const createRNRefinerWrapper = (nativeModule) => {
     },
     startSession: () => nativeModule.startSession(),
     setLocale: (locale) => nativeModule.setLocale(locale),
+    setCountry: (country) => nativeModule.setCountry(country),
+    setColorScheme: (colorScheme) => nativeModule.setColorScheme(colorScheme),
     setAnonymousId: (anonymousId) => nativeModule.setAnonymousId(anonymousId),
 
     // Event emitter methods (required for both architectures)

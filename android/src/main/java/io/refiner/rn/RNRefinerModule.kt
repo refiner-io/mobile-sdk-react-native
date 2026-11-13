@@ -151,6 +151,16 @@ class RNRefinerModule(reactContext: ReactApplicationContext) : ReactContextBaseJ
     }
 
     @ReactMethod
+    fun setCountry(country: String?) {
+        country?.let { Refiner.setCountry(it) }
+    }
+
+    @ReactMethod
+    fun setColorScheme(colorScheme: String?) {
+        colorScheme?.let { Refiner.setColorScheme(it) }
+    }
+
+    @ReactMethod
     fun setAnonymousId(anonymousId: String?) {
         anonymousId?.let { Refiner.setAnonymousId(it) }
     }

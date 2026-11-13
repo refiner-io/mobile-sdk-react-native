@@ -127,6 +127,16 @@ class RNRefinerTurboModule(
     }
 
     @ReactMethod
+    override fun setCountry(country: String?) {
+        country?.let { Refiner.setCountry(it) }
+    }
+
+    @ReactMethod
+    override fun setColorScheme(colorScheme: String?) {
+        colorScheme?.let { Refiner.setColorScheme(it) }
+    }
+
+    @ReactMethod
     override fun setAnonymousId(anonymousId: String?) {
         anonymousId?.let { Refiner.setAnonymousId(it) }
     }

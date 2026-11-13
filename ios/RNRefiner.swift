@@ -174,6 +174,16 @@ public class RNRefiner: RCTEventEmitter {
         Refiner.instance.setLocale(locale)
     }
 
+    @objc(setCountry:)
+    func setCountry(_ country: String) {
+        Refiner.instance.setCountry(country)
+    }
+
+    @objc(setColorScheme:)
+    func setColorScheme(_ colorScheme: String) {
+        Refiner.instance.setColorScheme(colorScheme)
+    }
+
     @objc(setAnonymousId:)
     func setAnonymousId(_ anonymousId: String) {
         Refiner.instance.setAnonymousId(anonymousId)
