@@ -21,7 +21,7 @@ let package = Package(
         // Resolved from the autolinker's ios/build/generated/autolinking/libs/<SwiftPM name>
         // symlink: four levels up reaches ios/build, where React Native generates xcframeworks.
         .package(name: "ReactNative", path: "../../../../xcframeworks"),
-        .package(url: "https://github.com/refiner-io/mobile-sdk-ios.git", from: "2.0.0"),
+        .package(url: "https://github.com/refiner-io/mobile-sdk-ios.git", from: "2.1.0"),
     ],
     targets: [
         .target(
