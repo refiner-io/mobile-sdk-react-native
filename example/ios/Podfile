@@ -27,7 +27,7 @@ target 'example' do
   config = use_native_modules!
 
   # RefinerSDK is no longer published to the CocoaPods trunk; take it from the public repo.
-  pod 'RefinerSDK', :git => 'https://github.com/refiner-io/mobile-sdk-ios.git', :tag => '2.0.0'
+  pod 'RefinerSDK', :git => 'https://github.com/refiner-io/mobile-sdk-ios.git', :tag => '2.1.0'
 
   # Flags change depending on the env values.
   flags = get_default_flags()
