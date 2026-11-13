@@ -28,6 +28,9 @@ export interface RefinerEvents {
   };
 }
 
+/** Survey color scheme preference for `setColorScheme`. */
+export type RefinerColorScheme = "auto" | "light" | "dark";
+
 export interface RefinerSDKInterface extends NativeModule {
   /**
    * Add contextual data to the current response
@@ -119,6 +122,18 @@ export interface RefinerSDKInterface extends NativeModule {
    * Set locale for the current user (including anonymous users)
    */
   setLocale: (locale: string) => void;
+
+  /**
+   * Set the country for the current user (including anonymous users).
+   * Sent as `country` together with the locale.
+   */
+  setCountry: (country: string) => void;
+
+  /**
+   * Set the survey color scheme: 'auto' (follow the device/app appearance, default),
+   * 'light' or 'dark'. Kept in memory only.
+   */
+  setColorScheme: (colorScheme: RefinerColorScheme) => void;
 
   /**
    * Set a custom anonymous ID
@@ -219,6 +234,8 @@ export interface NativeRNRefinerSpec {
   addToResponse(contextualData: Record<string, unknown>): void;
   startSession(): void;
   setLocale(locale: string): void;
+  setCountry(country: string): void;
+  setColorScheme(colorScheme: string): void;
   setAnonymousId(anonymousId: string): void;
   addListener(eventName: string): void;
   removeListeners(count: number): void;
